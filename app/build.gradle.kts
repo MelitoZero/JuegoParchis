@@ -9,7 +9,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     // Plugin para javaFX 
-    id("org.openjfx.javafxplugin") version "0.0.14"
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 repositories {
@@ -36,7 +36,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "juegoparchis.App"
+    mainClass.set("juegoparchis.MainJuego")
 }
 
 tasks.named<Test>("test") {
