@@ -29,6 +29,8 @@ public class MainJuego extends Application {
             primaryStage.show();
         } catch (IOException e) {
             System.out.println("Error al iniciar la aplicación:");
+            System.out.println("Tipo de error: " + e.getClass().getName());
+            System.out.println("Mensaje: " + e.getMessage());
             e.printStackTrace();
         }
     }
