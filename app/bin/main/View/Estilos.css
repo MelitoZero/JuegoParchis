@@ -1,0 +1,73 @@
+.boton-estilo {
+    /* Boton Principal y practicamente el unico que se usara en diseño*/
+    -fx-background-color: #D8AE39; 
+    -fx-background-radius: 30;
+    -fx-border-color: white;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #6213c1, #d404b8);
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+}
+
+.boton-OK-estilo {
+    /* Me equivoque serqan dos variantes de botones xd*/
+    -fx-background-color: #D8AE39; 
+    -fx-background-radius: 30;
+    -fx-border-color: #4AAEC9;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #6213c1, #d404b8);
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+}
+
+.Menu-estilo{
+    /* Menu Principal con degragado*/
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #1d5693af, #e6000080);
+    -fx-background-radius: 30;
+    -fx-font-size: 10px;
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+
+.Menu-alertas-estilo{ /* PENDIENTE */
+    /* Menu Principal para alertas*/
+    -fx-background-color: #7FBBF9;
+    -fx-background-radius: 30;
+}
+
+.letras-estilo{
+    /* diseño para quee las letras se vean bonitas */
+    -fx-font-size: 28px;
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.textfield-estilo{
+    /* Diseño para los campos de texto */
+    -fx-background-color: #ffffff00;
+    -fx-background-radius: 30;
+    -fx-border-color: white;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+    -fx-background-insets: 20;
+}
+
+.panel-seleccion-color-avatar{
+    -fx-background-color: #ffffff00;
+    -fx-background-radius: 30;
+    -fx-border-color: white;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+    -fx-background-insets: 20;
+    -fx-font-size: 10px;
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
