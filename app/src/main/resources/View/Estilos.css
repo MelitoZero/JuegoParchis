@@ -28,12 +28,22 @@
     /* Menu Principal con degragado*/
     -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #1d5693af, #e6000080);
     -fx-background-radius: 30;
-    -fx-font-size: 10px;
-    -fx-font-family: "Corbel";
-    -fx-font-weight: bold;
-    -fx-text-fill: black;
 }
 
+.Menu-estilo{
+    /* Menu Principal con degragado*/
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #1d5693af, #e6000080);
+    -fx-background-radius: 30;
+}
+
+.Menu-Dados-Ganadores-estilo{
+    /* Menu para dados y ganadores*/
+    -fx-background-color: #D8AE39;
+    -fx-background-radius: 30;
+    -fx-border-color: #4AAEC9;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+}
 
 .Menu-alertas-estilo{ /* PENDIENTE */
     /* Menu Principal para alertas*/
@@ -49,6 +59,14 @@
     -fx-text-fill: black;
 }
 
+.letras-Ganadores-estilo{
+    /* diseño para quee las letras se vean bonitas pero con degradado */
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #6213c1, #d404b8);
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+}
+
 .textfield-estilo{
     /* Diseño para los campos de texto */
     -fx-background-color: #ffffff00;
@@ -60,6 +78,7 @@
 }
 
 .panel-seleccion-color-avatar{
+    /* diseño para que el panel sea transparente y minimalista pa*/
     -fx-background-color: #ffffff00;
     -fx-background-radius: 30;
     -fx-border-color: white;
