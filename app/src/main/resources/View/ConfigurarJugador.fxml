@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="650.0" fitWidth="992.0" pickOnBounds="true">
          <image>
-            <Image url="@../imgs/Portada.png" />
+            <Image url="@../imgs/fondo1.png" />
          </image>
       </ImageView>
       <VBox alignment="TOP_CENTER" layoutX="288.0" layoutY="142.0" prefHeight="444.0" prefWidth="447.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">

@@ -19,7 +19,7 @@ public class ControladorInicial {
     protected void iniciarJuego( ActionEvent event) {
         try {
             // Cargar la nueva vista desde el archivo FXML
-            URL fxmlURL = getClass().getResource("/juegoparchis/View/InicioView.fxml");
+            URL fxmlURL = getClass().getResource("/View/InicioView.fxml");
             Parent nuevoVista = FXMLLoader.load(fxmlURL);
             // Obtener la escena actual y establecer la nueva escena
             Stage stageActual = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -30,6 +30,8 @@ public class ControladorInicial {
             stageActual.show();
         } catch (IOException e) {
             System.out.println("Error al cargar la vista del juego:");
+            System.out.println("Tipo de error: " + e.getClass().getName());
+            System.out.println("Mensaje: " + e.getMessage());
             e.printStackTrace();
         }
     }
