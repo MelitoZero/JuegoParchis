@@ -10,40 +10,40 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="373.0" fitWidth="600.0" pickOnBounds="true">
+      <ImageView fitHeight="650.0" fitWidth="992.0" pickOnBounds="true">
          <image>
             <Image url="@../imgs/Portada.png" />
          </image>
       </ImageView>
-      <VBox alignment="TOP_CENTER" layoutX="201.0" layoutY="11.0" prefHeight="351.0" prefWidth="216.0" stylesheets="@Estilos.css">
+      <VBox alignment="TOP_CENTER" layoutX="288.0" layoutY="142.0" prefHeight="444.0" prefWidth="447.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblJugador" text="Nombre Jugador" translateY="15.0">
+            <Label fx:id="lblJugador" styleClass="letras-estilo" text="Nombre del Jugador" translateY="15.0">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtJugador" translateY="20.0" />
-            <Label fx:id="lblColor" text="Color" translateY="25.0">
+            <TextField fx:id="txtJugador" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" translateY="20.0" />
+            <Label fx:id="lblColor" styleClass="letras-estilo" text="Color" translateY="25.0">
+               <font>
+                  <Font name="Impact" size="18.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cboxColor" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" translateY="30.0" />
+            <Label fx:id="lblAvatar" styleClass="letras-estilo" text="Avatar" translateY="35.0">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cboxColor" prefWidth="150.0" translateY="30.0" />
-            <Label fx:id="lblAvatar" text="Avatar" translateY="35.0">
+            <ComboBox fx:id="cboxAvatar" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" translateY="40.0" />
+            <Label fx:id="lblSala" styleClass="letras-estilo" text="Codigo Sala" translateY="45.0">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cboxAvatar" prefWidth="150.0" translateY="40.0" />
-            <Label fx:id="lblSala" text="Codigo Sala" translateY="45.0">
-               <font>
-                  <Font name="Franklin Gothic Medium" size="18.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtCodigoSala" translateY="50.0" />
-            <Button fx:id="btnUnirse" mnemonicParsing="false" onAction="#unirsePartida" text="Unirse" translateY="80.0">
+            <TextField fx:id="txtCodigoSala" prefHeight="20.0" prefWidth="326.0" styleClass="textfield-estilo" translateY="50.0" />
+            <Button fx:id="btnUnirse" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="51.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK" translateY="80.0">
                <font>
                   <Font size="18.0" />
                </font>
