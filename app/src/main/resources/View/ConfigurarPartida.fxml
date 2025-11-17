@@ -18,27 +18,27 @@
             <Image url="@../imgs/Fondo1.png" />
          </image>
       </ImageView>
-      <VBox fx:id="vBoxConfigurar" alignment="CENTER_LEFT" layoutX="197.0" layoutY="31.0" prefHeight="312.0" prefWidth="207.0" spacing="10.0">
+      <VBox fx:id="vBoxConfigurar" alignment="CENTER_LEFT" layoutX="156.0" layoutY="13.0" prefHeight="347.0" prefWidth="289.0" spacing="10.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblPartida" text="Nombre de la Partida">
+            <Label fx:id="lblPartida" styleClass="letras-estilo" text="Nombre de la Partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtPartida" />
-            <Label fx:id="lblCodigo" text="Codigo de partida">
+            <TextField fx:id="txtPartida" styleClass="textfield-estilo" />
+            <Label fx:id="lblCodigo" styleClass="letras-estilo" text="Codigo de partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtCodigo" />
-            <Label fx:id="lblColores" text="Paleta de Colores">
+            <TextField fx:id="txtCodigo" styleClass="textfield-estilo" />
+            <Label fx:id="lblColores" styleClass="letras-estilo" text="Paleta de Colores">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ColorPicker fx:id="colorPicker" />
-            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" mnemonicParsing="false" onAction="#configurarPartida" scaleShape="false" text="Listo" translateX="80.0" translateY="20.0">
+            <ColorPicker fx:id="colorPicker" styleClass="panel-seleccion-color-avatar" />
+            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" mnemonicParsing="false" onAction="#configurarPartida" scaleShape="false" styleClass="boton-OK-estilo" text="Listo" translateX="80.0" translateY="20.0">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
