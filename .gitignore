@@ -12,3 +12,5 @@ build/
 .classpath
 .project
 bin/
+#ignora la configuracion de Intellij IDE
+.idea
