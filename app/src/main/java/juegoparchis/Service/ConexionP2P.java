@@ -1,0 +1,76 @@
+package juegoparchis.Service;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import javafx.application.Platform;
+
+public class ConexionP2P {
+
+    private Socket socket;
+    private PrintWriter salida;
+    private BufferedReader entrada;
+    @SuppressWarnings("unused")
+    private boolean servidorHost;
+    //Asignación de puerto para la conexión P2P
+    private static final int PUERTO = 4770;
+    //Lógica de iniciación del servidor P2P para el HOST de la partida
+    public void iniciarServidor(Runnable recibirMensaje) {
+        servidorHost = true;
+        new Thread(() -> {
+            try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
+                System.out.println("Servidor P2P iniciado, esperando conexiones en puerto " + PUERTO);
+                    socket = serverSocket.accept();
+                    System.out.println("Cliente conectado: " + socket.getInetAddress());
+                    configutarFlujos();
+                    escucharMensajes(recibirMensaje);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    //Lógica de conexión al servidor P2P para el jugador de la partida
+    public void conectarAlServidor(String ipDestino, Runnable recibirMensaje) {
+        servidorHost = false;
+        new Thread(() ->{
+            try {
+                System.out.println("Intentando conectar al servidor P2P: " + ipDestino + "...");
+                socket = new Socket(ipDestino, PUERTO);
+                System.out.println("Conectado al servidor P2P: " + socket.getInetAddress());
+                configutarFlujos();
+                escucharMensajes(recibirMensaje);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    //Lógica de configuración de los flujos de entrada y salida
+    private void configutarFlujos() throws IOException {
+        //Canal para enviar mensajes
+        salida = new PrintWriter(socket.getOutputStream(), true);
+        //canal para recibir mensajes
+        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    }
+    //Lógica de envío de mensajes
+    public void enviarMensaje(String mensaje) {
+        if (salida != null){
+            salida.println(mensaje);
+            System.out.println("Mensaje enviado: " + mensaje);
+        }
+    }
+    //Lógica de escucha de mensajes entrantes
+    private void escucharMensajes(Runnable recibirMensaje) {
+        try {
+            String mensajeRecibido;
+            while ((mensajeRecibido = entrada.readLine()) != null) {
+                System.out.println("Mensaje recibido: " + mensajeRecibido);
+                //Logica del juego en el hilo de la interfaz gráfica
+                Platform.runLater(() -> {
+                    recibirMensaje.run();
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

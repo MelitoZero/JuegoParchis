@@ -7,6 +7,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+//import juegoparchis.Service.ConexionP2P;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,8 @@ import java.net.URL;
 import javafx.event.ActionEvent;
 
 public class ControladorConfigPartida {
+    //Añadimos el servicio de conexión
+    //private ConexionP2P conexionP2P = new ConexionP2P();
 
     @FXML
     private VBox vBoxConfigurar;
@@ -33,7 +36,11 @@ public class ControladorConfigPartida {
 
     @FXML
     protected void configurarPartida(ActionEvent event) {
-
+        //Iniciamos el servidor y logica para esperar conexiones de otros jugadores 
+        //Aun en desarrollo y prueba
+        /*conexionP2P.iniciarServidor(() ->{
+            System.out.println("Jugador conectado a la partida.");
+        });*/
         try {
             // Cargar la nueva vista desde el archivo FXML
             URL fxmlURL = getClass().getResource("/View/ConfigurarJugador.fxml");
