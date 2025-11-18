@@ -48,6 +48,9 @@ public class ControladorConfigPartida {
             stageActual.show();
 
         } catch (IOException e) {
+            System.out.println("Error al cargar la vista del juego:");
+            System.out.println("Tipo de error: " + e.getClass().getName());
+            System.out.println("Mensaje: " + e.getMessage());
             e.printStackTrace();
         }
 
