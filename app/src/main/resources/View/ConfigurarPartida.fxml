@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorConfigPartida">
    <children>
       <ImageView fx:id="FondoV2" fitHeight="373.0" fitWidth="600.0">
          <image>
@@ -38,10 +38,13 @@
                </font>
             </Label>
             <ColorPicker fx:id="colorPicker" styleClass="panel-seleccion-color-avatar" />
-            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" mnemonicParsing="false" onAction="#configurarPartida" scaleShape="false" styleClass="boton-OK-estilo" text="Listo" translateX="80.0" translateY="20.0">
+            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" mnemonicParsing="false" onAction="#configurarPartida" scaleShape="false" styleClass="boton-OK-estilo" text="Listo" translateX="80.0">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </Button>
          </children>
          <opaqueInsets>

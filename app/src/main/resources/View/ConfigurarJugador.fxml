@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorConfigJugador" >
    <children>
       <ImageView fitHeight="650.0" fitWidth="992.0" pickOnBounds="true">
          <image>
-            <Image url="@../imgs/fondo1.png" />
+            <Image url="@../imgs/Fondo1.png" />
          </image>
       </ImageView>
       <VBox alignment="TOP_CENTER" layoutX="288.0" layoutY="142.0" prefHeight="444.0" prefWidth="447.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
@@ -43,7 +43,7 @@
                </font>
             </Label>
             <TextField fx:id="txtCodigoSala" prefHeight="20.0" prefWidth="326.0" styleClass="textfield-estilo" translateY="50.0" />
-            <Button fx:id="btnUnirse" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="51.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK" translateY="80.0">
+            <Button fx:id="btnUnirse" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="51.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK" translateY="65.0">
                <font>
                   <Font size="18.0" />
                </font>
