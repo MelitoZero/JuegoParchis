@@ -9,7 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorConfigPartida">
@@ -19,9 +19,9 @@
             <Image url="@../imgs/Portada.png" />
          </image>
       </ImageView>
-      <VBox fx:id="vBoxConfigurar" alignment="CENTER_LEFT" layoutX="228.0" layoutY="120.0" prefHeight="480.0" prefWidth="625.0" spacing="20.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
+      <Pane layoutX="212.0" layoutY="91.0" prefHeight="538.0" prefWidth="657.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblPartida" text="Nombre de la Partida">
+            <Label fx:id="lblPartida" layoutY="6.0" text="Nombre de la Partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -30,45 +30,36 @@
                   <String fx:value="letras-Ganadores-estilo" />
                </styleClass>
             </Label>
-            <TextField fx:id="txtPartida" prefHeight="69.0" prefWidth="625.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblCodigo" styleClass="letras-Ganadores-estilo" text="Codigo de partida">
+            <TextField fx:id="txtPartida" layoutX="2.0" layoutY="55.0" prefHeight="69.0" prefWidth="495.0" styleClass="textfield-estilo" />
+            <Label fx:id="lblCodigo" layoutY="124.0" styleClass="letras-Ganadores-estilo" text="Codigo de partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtCodigo" prefHeight="69.0" prefWidth="625.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblColores" styleClass="letras-Ganadores-estilo" text="Paleta de Colores">
+            <TextField fx:id="txtCodigo" layoutY="157.0" prefHeight="69.0" prefWidth="495.0" styleClass="textfield-estilo" />
+            <Label fx:id="lblColores" layoutX="2.0" layoutY="232.0" styleClass="letras-Ganadores-estilo" text="Paleta de Colores">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ColorPicker fx:id="colorPicker" styleClass="panel-seleccion-color-avatar" />
-            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" mnemonicParsing="false" onAction="#configurarPartida" scaleShape="false" styleClass="boton-OK-estilo" text="Listo">
+            <ColorPicker fx:id="colorPicker" layoutX="6.0" layoutY="270.0" prefHeight="69.0" prefWidth="145.0" styleClass="panel-seleccion-color-avatar" />
+            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="132.0" layoutY="431.0" mnemonicParsing="false" onAction="#configurarPartida" prefHeight="63.0" prefWidth="165.0" scaleShape="false" styleClass="boton-OK-estilo" text="Listo">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
             </Button>
-            <Button fx:id="btnVolver" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="10.0" layoutY="413.0" mnemonicParsing="false" onAction="#Volver" scaleShape="false" styleClass="boton-OK-estilo" text="Volver">
+            <Button fx:id="btnVolver" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="367.0" layoutY="431.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Volver" prefHeight="63.0" prefWidth="165.0" scaleShape="false" styleClass="boton-OK-estilo" text="Volver">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-               <VBox.margin>
-                  <Insets left="400.0" />
-               </VBox.margin>
             </Button>
          </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
+      </Pane>
    </children>
 </AnchorPane>

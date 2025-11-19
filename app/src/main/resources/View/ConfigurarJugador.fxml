@@ -7,7 +7,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorConfigJugador">
@@ -17,42 +17,43 @@
             <Image url="@../imgs/Portada.png" />
          </image>
       </ImageView>
-      <VBox alignment="TOP_CENTER" layoutX="251.0" layoutY="107.0" prefHeight="506.0" prefWidth="578.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
+      <Pane layoutX="304.0" layoutY="131.0" prefHeight="458.0" prefWidth="472.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblJugador" styleClass="letras-Ganadores-estilo" text="Nombre del Jugador" translateY="15.0">
+            <Label fx:id="lblJugador" layoutX="10.0" layoutY="14.0" styleClass="letras-Ganadores-estilo" text="Nombre del Jugador">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtJugador" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" translateY="20.0" />
-            <Label fx:id="lblColor" styleClass="letras-Ganadores-estilo" text="Color" translateY="25.0">
-               <font>
-                  <Font name="Impact" size="18.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="cboxColor" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" translateY="30.0" />
-            <Label fx:id="lblAvatar" styleClass="letras-Ganadores-estilo" text="Avatar" translateY="35.0">
+            <TextField fx:id="txtJugador" layoutY="47.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
+            <Label fx:id="lblAvatar" layoutX="10.0" layoutY="223.0" styleClass="letras-Ganadores-estilo" text="Avatar">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cboxAvatar" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" translateY="40.0" />
-            <Label fx:id="lblSala" styleClass="letras-Ganadores-estilo" text="Codigo Sala" translateY="45.0">
+            <Label fx:id="lblSala" layoutX="10.0" layoutY="118.0" styleClass="letras-Ganadores-estilo" text="Codigo Sala">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtCodigoSala" prefHeight="20.0" prefWidth="326.0" styleClass="textfield-estilo" translateY="50.0" />
-            <Button fx:id="btnUnirse" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK" translateY="65.0">
+            <Button fx:id="btnUnirse" layoutX="60.0" layoutY="362.0" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#Volver" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK">
+            <Button fx:id="btnVolver" layoutX="269.0" layoutY="362.0" mnemonicParsing="false" onAction="#Volver" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="Volver">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-         </children></VBox>
+            <TextField fx:id="txtCodigoSala" layoutY="151.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
+            <ComboBox fx:id="cboxAvatar" layoutX="8.0" layoutY="256.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
+            <ComboBox fx:id="cboxColor" layoutX="8.0" layoutY="295.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
+         </children>
+      </Pane>
+      <Label fx:id="lblColor" layoutX="903.0" layoutY="447.0" styleClass="letras-Ganadores-estilo" text="Color">
+         <font>
+            <Font name="Impact" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

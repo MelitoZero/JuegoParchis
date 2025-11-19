@@ -75,6 +75,10 @@
     -fx-border-radius: 30;
     -fx-border-width: 6;
     -fx-background-insets: 20;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #6213c1, #d404b8);
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
 }
 
 .panel-seleccion-color-avatar{
@@ -89,4 +93,38 @@
     -fx-font-family: "Corbel";
     -fx-font-weight: bold;
     -fx-text-fill: black;
+}
+
+/* diseño para Los jugadores*/
+
+.Fichas-Jugadores-Rojo{
+    -fx-background-color: #fc0404;
+    -fx-background-radius: 30;
+    -fx-border-color: #000000;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+}
+
+.Fichas-Jugadores-Azul{
+    -fx-background-color: #0d86fb;
+    -fx-background-radius: 30;
+    -fx-border-color: #000000;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+}
+
+.Fichas-Jugadores-Amarillo{
+    -fx-background-color: #f0f800;
+    -fx-background-radius: 30;
+    -fx-border-color: #000000;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
+}
+
+.Fichas-Jugadores-Verdesito{
+    -fx-background-color: #52ff0f;
+    -fx-background-radius: 30;
+    -fx-border-color: #000000;
+    -fx-border-radius: 30;
+    -fx-border-width: 6;
 }
