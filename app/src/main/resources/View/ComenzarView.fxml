@@ -11,14 +11,14 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorInicial">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorInicial">
    <children>
-      <ImageView fx:id="portada" fitHeight="496.0" fitWidth="787.0" layoutX="-5.0" layoutY="-6.0">
+      <ImageView fx:id="portada" fitHeight="728.0" fitWidth="1080.0" layoutY="-2.0" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
          <image>
             <Image url="@../imgs/Portada.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnInicio" alignment="CENTER" contentDisplay="CENTER" layoutX="265.0" layoutY="395.0" mnemonicParsing="false" onAction="#iniciarJuego" prefHeight="64.0" prefWidth="250.0" styleClass="boton-estilo" stylesheets="@Estilos.css" text="COMENZAR" textAlignment="CENTER">
+      <Button fx:id="btnInicio" alignment="CENTER" contentDisplay="CENTER" layoutX="415.0" layoutY="575.0" mnemonicParsing="false" onAction="#iniciarJuego" prefHeight="64.0" prefWidth="250.0" styleClass="boton-estilo" stylesheets="@Estilos.css" text="COMENZAR" textAlignment="CENTER">
          <font>
             <Font name="Corbel Bold" size="32.0" />
          </font>

@@ -10,40 +10,45 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorConfigJugador" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorConfigJugador">
    <children>
-      <ImageView fitHeight="650.0" fitWidth="992.0" pickOnBounds="true">
+      <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
          <image>
-            <Image url="@../imgs/Fondo1.png" />
+            <Image url="@../imgs/Portada.png" />
          </image>
       </ImageView>
-      <VBox alignment="TOP_CENTER" layoutX="288.0" layoutY="142.0" prefHeight="444.0" prefWidth="447.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
+      <VBox alignment="TOP_CENTER" layoutX="251.0" layoutY="107.0" prefHeight="506.0" prefWidth="578.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblJugador" styleClass="letras-estilo" text="Nombre del Jugador" translateY="15.0">
+            <Label fx:id="lblJugador" styleClass="letras-Ganadores-estilo" text="Nombre del Jugador" translateY="15.0">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
             <TextField fx:id="txtJugador" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" translateY="20.0" />
-            <Label fx:id="lblColor" styleClass="letras-estilo" text="Color" translateY="25.0">
+            <Label fx:id="lblColor" styleClass="letras-Ganadores-estilo" text="Color" translateY="25.0">
                <font>
                   <Font name="Impact" size="18.0" />
                </font>
             </Label>
             <ComboBox fx:id="cboxColor" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" translateY="30.0" />
-            <Label fx:id="lblAvatar" styleClass="letras-estilo" text="Avatar" translateY="35.0">
+            <Label fx:id="lblAvatar" styleClass="letras-Ganadores-estilo" text="Avatar" translateY="35.0">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
             <ComboBox fx:id="cboxAvatar" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" translateY="40.0" />
-            <Label fx:id="lblSala" styleClass="letras-estilo" text="Codigo Sala" translateY="45.0">
+            <Label fx:id="lblSala" styleClass="letras-Ganadores-estilo" text="Codigo Sala" translateY="45.0">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
             <TextField fx:id="txtCodigoSala" prefHeight="20.0" prefWidth="326.0" styleClass="textfield-estilo" translateY="50.0" />
-            <Button fx:id="btnUnirse" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="51.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK" translateY="65.0">
+            <Button fx:id="btnUnirse" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK" translateY="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#Volver" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK">
                <font>
                   <Font size="18.0" />
                </font>
