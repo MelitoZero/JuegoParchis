@@ -4,14 +4,14 @@ Este repositorio contiene el proyecto del clásico juego de mesa Parchís desarr
 ### Tecnológias Utilizadas:
 - Lenguaje: Java (JDK 21+)
 - Interfaz Gráfica (GUI): JavaFX 21
-- Gestor de Tareas y Dependencias: Gradle (usando el DSL de Kotlin, .kts)
+- Gestor de Tareas y Dependencias: Gradle (usando el DSL de Kotlin)
 
 ### Ejecutar el Proyecto:
 Para compilar y ejecutar el juego en tu máquina, solo necesitas tener el JDK instalado, ya que el proyecto incluye el Gradle Wrapper.
 
 
 **Prerrequisitos**
-- JDK (Java Development Kit): Versión 17 o 21 (o superior).
+- JDK (Java Development Kit): Versión 21 (o superior).
 - Git: Para clonar el repositorio.
 
 ### Pasos de Ejecución:
@@ -27,8 +27,11 @@ Para ejecutar el proyecto, utiliza el comando run de Gradle.
 
 
 **En Windows (CMD o PowerShell):**
+Con cualquiera de las dos funciona en windows
 ````Bash
 ./gradlew run
+````
+````Bash
 .\gradlew.bat run.
 ````
 **En Linux o macOS:**

@@ -29,9 +29,11 @@ dependencies {
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
-    toolchain {
+    //Se desabilita el toolchain para que funcione en entornos con Jdks inferiores a la 21 o superiores a la 21
+    /*toolchain {
         languageVersion = JavaLanguageVersion.of(21)
-    }
+    }*/
+    
 }
 
 application {
