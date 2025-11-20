@@ -19,41 +19,41 @@
       </ImageView>
       <Pane layoutX="304.0" layoutY="131.0" prefHeight="458.0" prefWidth="472.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblJugador" layoutX="10.0" layoutY="14.0" styleClass="letras-Ganadores-estilo" text="Nombre del Jugador">
+            <Label fx:id="lblJugador" layoutX="21.0" layoutY="14.0" styleClass="letras-Ganadores-estilo" text="Nombre del Jugador">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtJugador" layoutY="47.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblAvatar" layoutX="10.0" layoutY="223.0" styleClass="letras-Ganadores-estilo" text="Avatar">
+            <TextField fx:id="txtJugador" layoutX="60.0" layoutY="47.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
+            <Label fx:id="lblAvatar" layoutX="25.0" layoutY="213.0" styleClass="letras-Ganadores-estilo" text="Avatar">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblSala" layoutX="10.0" layoutY="118.0" styleClass="letras-Ganadores-estilo" text="Codigo Sala">
+            <Label fx:id="lblSala" layoutX="19.0" layoutY="112.0" styleClass="letras-Ganadores-estilo" text="Codigo Sala">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="btnUnirse" layoutX="60.0" layoutY="362.0" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="OK">
+            <Button fx:id="btnUnirse" layoutX="60.0" layoutY="369.0" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="Unirse">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btnVolver" layoutX="269.0" layoutY="362.0" mnemonicParsing="false" onAction="#Volver" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="Volver">
+            <Button fx:id="btnVolver" layoutX="266.0" layoutY="369.0" mnemonicParsing="false" onAction="#Volver" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="Volver">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="txtCodigoSala" layoutY="151.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
-            <ComboBox fx:id="cboxAvatar" layoutX="8.0" layoutY="256.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
-            <ComboBox fx:id="cboxColor" layoutX="8.0" layoutY="295.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
+            <TextField fx:id="txtCodigoSala" layoutX="66.0" layoutY="145.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
+            <ComboBox fx:id="cboxAvatar" layoutX="25.0" layoutY="246.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
+            <ComboBox fx:id="cboxColor" layoutX="25.0" layoutY="318.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
+            <Label fx:id="lblColor" layoutX="25.0" layoutY="285.0" styleClass="letras-Ganadores-estilo" text="Color Ficha">
+               <font>
+                  <Font name="Franklin Gothic Medium" size="18.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
-      <Label fx:id="lblColor" layoutX="903.0" layoutY="447.0" styleClass="letras-Ganadores-estilo" text="Color">
-         <font>
-            <Font name="Impact" size="18.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
