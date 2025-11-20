@@ -1,5 +1,5 @@
 package juegoparchis.Model;
 
-public class Juego {
+public class EstadoJuego {
     
 }
