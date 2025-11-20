@@ -1,54 +1,37 @@
 package juegoparchis.Controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.fxml.FXMLLoader;
-import java.io.IOException;
-import java.net.URL;
+import juegoparchis.Util.NavegacionPantallas;
 import javafx.event.ActionEvent;
 
 public class ControladorConfigJugador {
 
+    @FXML
+    private TextField txtJugador;
 
-        @FXML
-        private TextField txtJugador;
+    @FXML
+    private ComboBox<String> cboxColor;
 
-        @FXML
-        private ComboBox<String> cboxColor;
+    @FXML
+    private ComboBox<String> cboxAvatar;
 
-        @FXML
-        private ComboBox<String> cboxAvatar;
+    @FXML
+    private TextField txtCodigoSala;
 
-        @FXML
-        private TextField txtCodigoSala;
-
-        @FXML
-        private Button btnUnirse;
-
-        @FXML
-        protected void unirsePartida(ActionEvent event) {
-            try {
-            // Cargar la nueva vista desde el archivo FXML
-            URL fxmlURL = getClass().getResource("/View/IniciaJuego.fxml");
-            Parent nuevoVista = FXMLLoader.load(fxmlURL);
-            // Obtener la escena actual y establecer la nueva escena
-            Stage stageActual = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene nuevaEscena = new Scene(nuevoVista);
-            // Configurar la nueva escena en la ventana actual
-            stageActual.setScene(nuevaEscena);
-            //Muestra la nueva escena
-            stageActual.show();
-        } catch (IOException e) {
-            System.out.println("Error al cargar la vista del juego:");
-            System.out.println("Tipo de error: " + e.getClass().getName());
-            System.out.println("Mensaje: " + e.getMessage());
-            e.printStackTrace();
-        }
+    @FXML
+    private Button btnUnirse;
+    //Método para unirse a una partida
+    @FXML
+    protected void unirsePartida(ActionEvent event) {
+        NavegacionPantallas.cambiarPantalla(event, "/View/IniciaJuego.fxml");
     }
+    //Método para volver a la pantalla anterior
+    @FXML
+    protected void Volver(ActionEvent event) {
+        NavegacionPantallas.cambiarPantalla(event, "/View/ConfigurarPartida.fxml");
+    }
+
 }

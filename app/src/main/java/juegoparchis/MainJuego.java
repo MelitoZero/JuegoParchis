@@ -1,38 +1,16 @@
 package juegoparchis;
 
-import java.io.IOException;
-import java.net.URL;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import juegoparchis.Util.NavegacionPantallas;
 
 public class MainJuego extends Application {
-    /**
-     * Método start que se llama al iniciar la aplicación JavaFX.
-     * @param args
-     */
+
+    //Método start que se llama al iniciar la aplicación JavaFX.
     @Override
     public void start(Stage primaryStage) {
-        try {
-            //Carga el FXML inicial
-            URL fxmlURL = getClass().getResource("/View/ComenzarView.fxml");
-            Parent root = FXMLLoader.load(fxmlURL);
-            //Crear la escena con el FXML cargado
-            Scene scene = new Scene(root);
-            //Se le pone un titulo a la ventana
-            primaryStage.setTitle("Juego de Parchís");
-            //Se establece la escena en la ventana
-            primaryStage.setScene(scene);
-            //Muestra la ventana
-            primaryStage.show();
-        } catch (IOException e) {
-            System.out.println("Error al iniciar la aplicación:");
-            System.out.println("Tipo de error: " + e.getClass().getName());
-            System.out.println("Mensaje: " + e.getMessage());
-            e.printStackTrace();
-        }
+        //Cargamos la primera pantalla desde el archivo FXML.
+        NavegacionPantallas.iniciarAplicacion(primaryStage, "/View/ComenzarView.fxml", "Juego Parchís");
     }
 
     public static void main(String[] args) {
