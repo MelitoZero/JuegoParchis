@@ -26,12 +26,12 @@ public class ControladorConfigJugador {
     //Método para unirse a una partida
     @FXML
     protected void unirsePartida(ActionEvent event) {
-        NavegacionPantallas.cambiarPantalla(event, "/View/IniciaJuego.fxml");
+        NavegacionPantallas.cambiarPantalla(event, "/View/VistaEspera.fxml");
     }
     //Método para volver a la pantalla anterior
     @FXML
     protected void Volver(ActionEvent event) {
-        NavegacionPantallas.cambiarPantalla(event, "/View/ConfigurarPartida.fxml");
+        NavegacionPantallas.cambiarPantalla(event, "/View/VistaConfigPartida.fxml");
     }
 
 }

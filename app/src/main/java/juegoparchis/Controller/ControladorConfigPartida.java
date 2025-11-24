@@ -35,12 +35,12 @@ public class ControladorConfigPartida {
         /*conexionP2P.iniciarServidor(() ->{
             System.out.println("Jugador conectado a la partida.");
         });*/
-        NavegacionPantallas.cambiarPantalla(event, "/View/ConfigurarJugador.fxml");
+        NavegacionPantallas.cambiarPantalla(event, "/View/VistaConfigJugador.fxml");
     }
     //Función para regresar a la pantalla principal
     @FXML
     protected void Volver(ActionEvent event) {
-        NavegacionPantallas.cambiarPantalla(event, "/View/InicioView.fxml");
+        NavegacionPantallas.cambiarPantalla(event, "/View/VistaInicio.fxml");
     }
 
 }

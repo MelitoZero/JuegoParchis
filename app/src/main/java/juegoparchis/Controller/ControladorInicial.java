@@ -11,6 +11,6 @@ public class ControladorInicial {
     private Button btnInicio;
     @FXML //Permite a javaFX conectar el componente FXML con el método onAction="#iniciarJuego"
     protected void iniciarJuego( ActionEvent event) {
-        NavegacionPantallas.cambiarPantalla(event, "/View/InicioView.fxml");
+        NavegacionPantallas.cambiarPantalla(event, "/View/VistaMenu.fxml");
     }
 }

@@ -14,11 +14,11 @@ public class ControladorMenu {
     private Button btnUnirse;
     @FXML
     protected void crearPartida( ActionEvent event) {
-        NavegacionPantallas.cambiarPantalla(event, "/View/ConfigurarPartida.fxml");
+        NavegacionPantallas.cambiarPantalla(event, "/View/VistaConfigPartida.fxml");
     }
     @FXML
     protected void unirsePartida( ActionEvent event) {
-        NavegacionPantallas.cambiarPantalla(event, "/View/ConfigurarJugador.fxml");
+        NavegacionPantallas.cambiarPantalla(event, "/View/VistaConfigJugador.fxml");
     }
 
 }

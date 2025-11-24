@@ -10,7 +10,7 @@ public class MainJuego extends Application {
     @Override
     public void start(Stage primaryStage) {
         //Cargamos la primera pantalla desde el archivo FXML.
-        NavegacionPantallas.iniciarAplicacion(primaryStage, "/View/ComenzarView.fxml", "Juego Parchís");
+        NavegacionPantallas.iniciarAplicacion(primaryStage, "/View/VistaInicio.fxml", "Juego Parchís");
     }
 
     public static void main(String[] args) {

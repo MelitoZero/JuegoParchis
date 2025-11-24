@@ -1,17 +1,20 @@
 package juegoparchis.Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
 public class ControladorPartida {
     
     @FXML
-    private Button btnIniciar;
+    private ImageView imgTablero;
     @FXML
-    protected void iniciarPartida( ActionEvent event) {
-        // Lógica para iniciar la partida
+    public void initialize() {
+        // Aquí puedes agregar cualquier inicialización necesaria para el controlador
+        imgTablero.setOnMouseClicked(event ->{
+            double x = event.getX();
+            double y = event.getY();
+            System.out.println("recorrido.put(NUMERO, new Point2D(" + x + ", " + y + "));");    
+        });
     }
-    
 
 }
