@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorPartida">
+   <children>
+      <ImageView fx:id="imgTablero" fitHeight="900.0" fitWidth="900.0">
+         <image>
+            <Image url="@../imgs/Tablerohd.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
