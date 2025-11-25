@@ -1,7 +1,7 @@
 package juegoparchis.Controller;
 
 import java.io.InputStream;
-
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,7 +12,9 @@ import javafx.scene.layout.Pane;
 import javafx.geometry.Point2D;
 import juegoparchis.Model.Dado;
 import juegoparchis.Model.Ficha;
+import juegoparchis.Model.Jugador;
 import juegoparchis.Model.Enum.Color;
+import juegoparchis.Service.ConexionP2P;
 import juegoparchis.Util.CoordenadasTablero;
 import juegoparchis.View.VistaFicha;
 
@@ -43,7 +45,12 @@ public class ControladorPartida {
         });*/
         dadoModelo = new Dado();
         actualizarImgDado(dadoModelo.getValor());
-        dibujarFichas();
+    }
+    //Método para inicializar los datos de la partida
+    public void initData(List<Jugador> jugadores, ConexionP2P conexion, Jugador yo) {
+        //Lógica para inicializar la partida con los datos recibidos
+        //Aquí puedes agregar más lógica para configurar la partida
+        dibujarFichasJugadores(jugadores);
     }
     @FXML
     protected void lanzarDado(ActionEvent event) {
@@ -57,11 +64,11 @@ public class ControladorPartida {
         //Reactivar el botón despues de terminar el turno
         //btnTirarDado.setDisable(false);
     }
-    private void dibujarFichas() {
+    private void dibujarFichasJugadores(List<Jugador> listaJugadores) {
         // Lógica para dibujar las fichas en el panelFichas
-        // Por ejemplo, podrías iterar sobre una lista de fichas y agregarlas al panel
-        Color[] colores = {Color.ROJO, Color.AZUL, Color.VERDE, Color.AMARILLO};
-        for (Color color : colores){
+        panelFichas.getChildren().clear(); // Limpiar fichas anteriores
+        for (Jugador jugador : listaJugadores) {
+            Color color = jugador.getColor();
             for(int i = 0; i < 4; i++){
                 // Crear la ficha lógica del modelo
                 Ficha fichaLogica = new Ficha(i, color);

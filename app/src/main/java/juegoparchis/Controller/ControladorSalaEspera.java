@@ -1,6 +1,8 @@
 package juegoparchis.Controller;
 
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,10 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import juegoparchis.Model.Enum.Color;
 import juegoparchis.Service.ConexionP2P;
-import juegoparchis.Util.NavegacionPantallas;
+import juegoparchis.Model.Jugador;
 
 public class ControladorSalaEspera {
-    
+    //Atributos de la clase
+    private Jugador yo;
+    private List<Jugador> jugadoresConectados = new ArrayList<>();
     private ConexionP2P conexion;
     private String miNombre;
     private boolean soyHost;
@@ -23,27 +27,28 @@ public class ControladorSalaEspera {
     //Método para unirse a la partida desde la sala de espera
     @FXML
     protected void iniciarPartida(ActionEvent event) {
-        //Lógica para unirse a la partida
-        //Cambiar a la pantalla del juego
-        NavegacionPantallas.cambiarPantalla(event, "/View/VistaTablero.fxml");
+        //Avisar a los jugadores que la partida va a iniciar
+        conexion.enviarMensaje("IniciarPartida");
+        irAlTablero();
     }
 
     /**
     * Método para inicializar la sala de espera desde los datos de la pantalla anterior
     */
-    public void initData(String nombreJugador, boolean soyHost, String ipDestino, Color colorSeleccionado, String avatarSeleccionado) {
-        this.miNombre = nombreJugador;
-        this.soyHost = soyHost;
+    public void initData(String nombre, boolean esHost, String ip, Color color, String avatar) {
+        this.miNombre = nombre;
+        this.soyHost = esHost;
+        this.yo = new Jugador(nombre, avatar, color);
+        this.jugadoresConectados.add(yo);
         this.conexion = new ConexionP2P();
-        //Me agrego a la lista
-        agregarJugador(miNombre + "(Yo)");
+        //Mostrar mi nombre en la lista de jugadores
+        agregarJugador(miNombre + " (Yo)");
         //Si es el host, habilita el botón para iniciar la partida
         if (soyHost) {
             configurarHost();
         } else {
-            configurarCliente(ipDestino);
+            configurarCliente(ip);
         }
-
     }
     //Método para actualizar la lista de jugadores en la sala de espera
     public void agregarJugador(String nombre) {
@@ -68,29 +73,49 @@ public class ControladorSalaEspera {
         btnUnirse.setDisable(true);
         //Conecta al host y establece el manejador de mensajes entrantes
         conexion.conectarAlServidor(ipDestino, mensaje -> procesarMensaje(mensaje));
-        new Thread(() -> {
+        new Thread(() ->{
             try {
                 Thread.sleep(500); // Espera medio segundo para asegurar la conexión
-                conexion.enviarMensaje("Hola Nuevo Jugador: " + miNombre);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException e) { e.printStackTrace(); }
+            conexion.enviarMensaje("Unirse:" + yo.getNombre() + ":" + yo.getColor());
         }).start();
     }
     //Método para procesar los mensajes entrantes
     private void procesarMensaje(String mensaje) {
         System.out.println("Procesando mensaje: " + mensaje);//Para depuración
-        if (mensaje.startsWith("Hola Nuevo Jugador: ")) {
-            String nombreNuevoJugador = mensaje.split(":")[1];
-            //Agrega el nuevo jugador a la lista
+        //En caso de que alguien se une
+        if (mensaje.startsWith("Unirse:")) {
+            String[] partes = mensaje.split(":");
+            String nombreNuevoJugador = partes[1];
+            Color colorNuevoJugador = Color.valueOf(partes[2]);
+            //Luego vemos lo del avatar
+            //Creamos el nuevo jugador y lo agregamos a la lista logica
+            Jugador nuevoJugador = new Jugador(nombreNuevoJugador, "avatar1.jpg", colorNuevoJugador);
+            jugadoresConectados.add(nuevoJugador);
+            //Agrega el nuevo jugador a la lista visual
             agregarJugador(nombreNuevoJugador);
-            //Si soy el host, notifico a los demás jugadores del nuevo jugador
-            if (soyHost) {
-                conexion.enviarMensaje("Hola Jugador: " + miNombre);
-            }
-        } else if (mensaje.startsWith("Hola Jugador: ")) {
-            String nombreHost = mensaje.split(":")[1];
-            agregarJugador(nombreHost + " (Host)");
+            //Si soy el host, notifico a jugadores(despues se implementará)
+        }
+        //En caso de que el host inicia la partida
+        else if (mensaje.equals("IniciarPartida")) {
+            Platform.runLater(this::irAlTablero);
+        }
+    }
+    //Método para ir a la pantalla del tablero
+    private void irAlTablero() {
+        try {
+            //Cambiar a la pantalla del tablero
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/View/VistaTablero.fxml"));
+            javafx.scene.Parent root = loader.load();
+            //Obtener el controlador de la pantalla del tablero
+            ControladorPartida controladorPartida = loader.getController();
+            //Inicializar los datos de la partida en el controlador
+            controladorPartida.initData(jugadoresConectados, conexion, yo);
+            javafx.stage.Stage stage = (javafx.stage.Stage) vboxJugadores.getScene().getWindow();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
