@@ -9,6 +9,9 @@
     -fx-font-family: "Corbel";
     -fx-font-weight: bold;
     -fx-font-size: 28px;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
 }
 
 .boton-OK-estilo {
@@ -127,4 +130,21 @@
     -fx-border-color: #000000;
     -fx-border-radius: 30;
     -fx-border-width: 6;
+}
+
+.avatar-con-borde {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0.3, 0, 2);
+    -fx-background-color: #f0f0f0;
+}
+
+.dado-con-borde {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0.3, 0, 2);
 }
