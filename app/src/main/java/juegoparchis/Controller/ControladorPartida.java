@@ -12,6 +12,8 @@ import juegoparchis.View.VistaFicha;
 public class ControladorPartida {
     
     @FXML
+    private ImageView imgPerfil1, imgPerfil2;
+    @FXML
     private Pane panelFichas;
     @FXML
     private ImageView imgTablero;
