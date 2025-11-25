@@ -24,6 +24,7 @@ public class NavegacionPantallas {
             Scene nuevaEscena = new Scene(nuevaVista);
             stage.setScene(nuevaEscena);
             stage.setTitle(tituloVentana);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             //Maneja los errores y muestra mensajes en la consola
