@@ -8,41 +8,41 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorSalaEspera">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="juegoparchis.Controller.ControladorSalaEspera">
    <children>
-      <ImageView fitHeight="407.0" fitWidth="607.0" layoutX="-3.0" layoutY="-3.0">
+      <ImageView fx:id="imgEspera" fitHeight="720.0" fitWidth="1080.0" layoutX="-3.0" layoutY="-3.0">
          <image>
             <Image url="@../imgs/Fondo1.png" />
          </image>
       </ImageView>
-      <Pane layoutX="152.0" layoutY="62.0" prefHeight="298.0" prefWidth="296.0" styleClass="Menu-Dados-Ganadores-estilo" stylesheets="@Estilos.css">
+      <Pane fx:id="paneEspera" layoutX="328.0" layoutY="162.0" prefHeight="390.0" prefWidth="424.0" styleClass="Menu-Dados-Ganadores-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label layoutX="27.0" layoutY="47.0" styleClass="letras-Ganadores-estilo" text="Jugadores:">
+            <Label fx:id="lblJugadores" layoutX="27.0" layoutY="32.0" styleClass="letras-Ganadores-estilo" stylesheets="@Estilos.css" text="Jugadores:">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblJugador1" layoutX="27.0" layoutY="63.0" styleClass="letras-Ganadores-estilo" stylesheets="@Estilos.css" text="1:">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblJugador2" layoutX="26.0" layoutY="118.0" styleClass="letras-Ganadores-estilo" stylesheets="@Estilos.css" text="2:">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="27.0" layoutY="87.0" styleClass="letras-Ganadores-estilo" text="1:">
+            <Label fx:id="lblJugador3" layoutX="27.0" layoutY="173.0" styleClass="letras-Ganadores-estilo" stylesheets="@Estilos.css" text="3:">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="27.0" layoutY="118.0" styleClass="letras-Ganadores-estilo" text="2:">
+            <Label fx:id="lblJugador4" layoutX="26.0" layoutY="228.0" styleClass="letras-Ganadores-estilo" stylesheets="@Estilos.css" text="4:">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="27.0" layoutY="149.0" styleClass="letras-Ganadores-estilo" text="3:">
-               <font>
-                  <Font name="System Bold" size="21.0" />
-               </font>
-            </Label>
-            <Label layoutX="27.0" layoutY="180.0" styleClass="letras-Ganadores-estilo" text="4:">
-               <font>
-                  <Font name="System Bold" size="21.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnIniciar" layoutX="86.0" layoutY="221.0" mnemonicParsing="false" onAction="#iniciarPartida" styleClass="boton-OK-estilo" text="Iniciar" />
+            <Button fx:id="btnIniciar" layoutX="144.0" layoutY="285.0" mnemonicParsing="false" onAction="#iniciarPartida" styleClass="boton-OK-estilo" stylesheets="@Estilos.css" text="Iniciar" />
          </children>
       </Pane>
    </children>

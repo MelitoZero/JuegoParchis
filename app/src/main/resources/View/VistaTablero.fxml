@@ -30,17 +30,17 @@
                   <Image url="@../imgs/Perfil.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblJugador1" layoutX="15.0" layoutY="14.0" text="JUGADOR 1">
+            <Label fx:id="lblJugador1" layoutX="15.0" layoutY="14.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 1">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblTurnoJugador" layoutX="18.0" layoutY="331.0" text="TURNO DE:">
+            <Label fx:id="lblTurnoJugador" layoutX="5.0" layoutY="318.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="TURNO DE:">
                <font>
                   <Font name="SansSerif Regular" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblJugador2" layoutX="15.0" layoutY="692.0" text="JUGADOR 2">
+            <Label fx:id="lblJugador2" layoutX="15.0" layoutY="692.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 2">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
@@ -72,12 +72,12 @@
                   <Image url="@../imgs/Perfil.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblJugador3" layoutX="14.0" layoutY="14.0" text="JUGADOR 3">
+            <Label fx:id="lblJugador3" layoutX="14.0" layoutY="14.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 3">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblJugador4" layoutX="14.0" layoutY="696.0" text="JUGADOR 4">
+            <Label fx:id="lblJugador4" layoutX="14.0" layoutY="696.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 4">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>

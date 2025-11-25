@@ -25,6 +25,9 @@
     -fx-font-family: "Corbel";
     -fx-font-weight: bold;
     -fx-font-size: 28px;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
 }
 
 .Menu-estilo{
@@ -67,8 +70,19 @@
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #6213c1, #d404b8);
     -fx-font-family: "Corbel";
     -fx-font-weight: bold;
-    -fx-font-size: 28px;
+    -fx-font-size: 38px;
+    -fx-padding: 0 0 10px 0;
 }
+.letras-jugadores-estilo{
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #6213c1, #d404b8);
+    -fx-font-family: "Corbel";
+    -fx-font-weight: bold;
+    -fx-font-size: 26px;
+    -fx-padding: 0 0 12px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 4, 0.3, 1, 1);
+    -fx-font-smoothing-type: lcd;
+}
+
 
 .textfield-estilo{
     /* Diseño para los campos de texto */
