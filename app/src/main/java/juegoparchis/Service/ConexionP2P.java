@@ -1,9 +1,13 @@
 package juegoparchis.Service;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import javafx.application.Platform;
+import java.util.function.Consumer;
 
 public class ConexionP2P {
 
@@ -15,7 +19,7 @@ public class ConexionP2P {
     //Asignación de puerto para la conexión P2P
     private static final int PUERTO = 4770;
     //Lógica de iniciación del servidor P2P para el HOST de la partida
-    public void iniciarServidor(Runnable recibirMensaje) {
+    public void iniciarServidor(Consumer<String> recibirMensaje) {
         servidorHost = true;
         new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
@@ -30,7 +34,7 @@ public class ConexionP2P {
         }).start();
     }
     //Lógica de conexión al servidor P2P para el jugador de la partida
-    public void conectarAlServidor(String ipDestino, Runnable recibirMensaje) {
+    public void conectarAlServidor(String ipDestino, Consumer<String> recibirMensaje) {
         servidorHost = false;
         new Thread(() ->{
             try {
@@ -59,14 +63,15 @@ public class ConexionP2P {
         }
     }
     //Lógica de escucha de mensajes entrantes
-    private void escucharMensajes(Runnable recibirMensaje) {
+    private void escucharMensajes(Consumer<String> recibirMensaje) {
         try {
             String mensajeRecibido;
             while ((mensajeRecibido = entrada.readLine()) != null) {
                 System.out.println("Mensaje recibido: " + mensajeRecibido);
+                final String mensajeFinal = mensajeRecibido;
                 //Logica del juego en el hilo de la interfaz gráfica
                 Platform.runLater(() -> {
-                    recibirMensaje.run();
+                    recibirMensaje.accept(mensajeFinal);
                 });
             }
         } catch (IOException e) {

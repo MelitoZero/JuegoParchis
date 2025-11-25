@@ -61,4 +61,17 @@ public class NavegacionPantallas {
             e.printStackTrace();
         }
     }
+    public static <T> T cambiarPantallaControlador(ActionEvent event, String rutaFXML){
+        try {
+            FXMLLoader loader = new FXMLLoader(NavegacionPantallas.class.getResource(rutaFXML));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+            return loader.getController();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
