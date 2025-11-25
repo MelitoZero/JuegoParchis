@@ -14,41 +14,41 @@
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
          <image>
-            <Image url="@../imgs/Portada.png" />
+            <Image url="@../imgs/Fondo1.png" />
          </image>
       </ImageView>
-      <Pane layoutX="304.0" layoutY="131.0" prefHeight="458.0" prefWidth="472.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
+      <Pane layoutX="304.0" layoutY="131.0" prefHeight="460.0" prefWidth="480.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblJugador" layoutX="21.0" layoutY="14.0" styleClass="letras-Ganadores-estilo" text="Nombre del Jugador">
+            <Label fx:id="lblJugador" layoutX="40.0" layoutY="26.0" styleClass="letras-jugadores-estilo" text="Nombre del Jugador">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtJugador" layoutX="60.0" layoutY="47.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblAvatar" layoutX="25.0" layoutY="213.0" styleClass="letras-Ganadores-estilo" text="Avatar">
+            <TextField fx:id="txtJugador" layoutX="60.0" layoutY="69.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
+            <Label fx:id="lblAvatar" layoutX="78.0" layoutY="274.0" styleClass="letras-jugadores-estilo" text="Avatar">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblSala" layoutX="19.0" layoutY="112.0" styleClass="letras-Ganadores-estilo" text="Codigo Sala">
+            <Label fx:id="lblSala" layoutX="41.0" layoutY="147.0" styleClass="letras-jugadores-estilo" text="Codigo Sala">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="btnUnirse" layoutX="60.0" layoutY="369.0" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="Unirse">
+            <Button fx:id="btnUnirse" layoutX="42.0" layoutY="369.0" mnemonicParsing="false" onAction="#unirsePartida" prefHeight="60.0" prefWidth="160.0" styleClass="boton-OK-estilo" text="Unirse">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btnVolver" layoutX="266.0" layoutY="369.0" mnemonicParsing="false" onAction="#Volver" prefHeight="65.0" prefWidth="167.0" styleClass="boton-OK-estilo" text="Volver">
+            <Button fx:id="btnVolver" layoutX="270.0" layoutY="369.0" mnemonicParsing="false" onAction="#Volver" prefHeight="60.0" prefWidth="160.0" styleClass="boton-OK-estilo" text="Volver">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="txtCodigoSala" layoutX="66.0" layoutY="145.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
-            <ComboBox fx:id="cboxAvatar" layoutX="25.0" layoutY="246.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
-            <ComboBox fx:id="cboxColor" layoutX="25.0" layoutY="318.0" prefWidth="150.0" styleClass="panel-seleccion-color-avatar" />
-            <Label fx:id="lblColor" layoutX="25.0" layoutY="285.0" styleClass="letras-Ganadores-estilo" text="Color Ficha">
+            <TextField fx:id="txtCodigoSala" layoutX="60.0" layoutY="198.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
+            <ComboBox fx:id="cboxAvatar" layoutX="41.0" layoutY="317.0" prefWidth="150.0" promptText="Avatar1" styleClass="panel-seleccion-color-avatar" visibleRowCount="4" />
+            <ComboBox fx:id="cboxColor" layoutX="279.0" layoutY="317.0" prefWidth="150.0" promptText="Rojo" styleClass="panel-seleccion-color-avatar" visibleRowCount="4" />
+            <Label fx:id="lblColor" layoutX="292.0" layoutY="274.0" styleClass="letras-jugadores-estilo" text="Color Ficha">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>

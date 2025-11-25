@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -16,34 +14,24 @@
    <children>
       <ImageView fx:id="FondoV2" fitHeight="720.0" fitWidth="1080.0">
          <image>
-            <Image url="@../imgs/Portada.png" />
+            <Image url="@../imgs/Fondo1.png" />
          </image>
       </ImageView>
-      <Pane layoutX="212.0" layoutY="91.0" prefHeight="538.0" prefWidth="657.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
+      <Pane layoutX="240.0" layoutY="145.0" prefHeight="430.0" prefWidth="600.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblPartida" layoutY="6.0" text="Nombre de la Partida">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="letras-estilo" />
-                  <String fx:value="letras-Ganadores-estilo" />
-               </styleClass>
-            </Label>
-            <TextField fx:id="txtPartida" layoutX="2.0" layoutY="55.0" prefHeight="69.0" prefWidth="495.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblCodigo" layoutY="124.0" styleClass="letras-Ganadores-estilo" text="Codigo de partida">
+            <Label fx:id="lblPartida" layoutX="174.0" layoutY="14.0" styleClass="letras-jugadores-estilo" text="Nombre de la Partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtCodigo" layoutY="157.0" prefHeight="69.0" prefWidth="495.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblColores" layoutX="2.0" layoutY="232.0" styleClass="letras-Ganadores-estilo" text="Paleta de Colores">
+            <TextField fx:id="txtPartida" layoutX="88.0" layoutY="69.0" prefHeight="65.0" prefWidth="410.0" styleClass="textfield-estilo" />
+            <Label fx:id="lblCodigo" layoutX="194.0" layoutY="148.0" styleClass="letras-jugadores-estilo" text="Codigo de partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ColorPicker fx:id="colorPicker" layoutX="6.0" layoutY="270.0" prefHeight="69.0" prefWidth="145.0" styleClass="panel-seleccion-color-avatar" />
-            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="132.0" layoutY="431.0" mnemonicParsing="false" onAction="#configurarPartida" prefHeight="63.0" prefWidth="165.0" scaleShape="false" styleClass="boton-OK-estilo" text="Listo">
+            <TextField fx:id="txtCodigo" layoutX="88.0" layoutY="197.0" prefHeight="65.0" prefWidth="410.0" styleClass="textfield-estilo" />
+            <Button fx:id="btnListo" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="92.0" layoutY="344.0" mnemonicParsing="false" onAction="#configurarPartida" prefHeight="63.0" prefWidth="165.0" scaleShape="false" styleClass="boton-OK-estilo" text="Listo">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -51,7 +39,7 @@
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Button fx:id="btnVolver" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="367.0" layoutY="431.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Volver" prefHeight="63.0" prefWidth="165.0" scaleShape="false" styleClass="boton-OK-estilo" text="Volver">
+            <Button fx:id="btnVolver" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="329.0" layoutY="344.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Volver" prefHeight="63.0" prefWidth="165.0" scaleShape="false" styleClass="boton-OK-estilo" text="Volver">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
