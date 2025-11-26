@@ -23,7 +23,7 @@ public class ControladorSalaEspera {
     @FXML
     private VBox vboxJugadores;
     @FXML
-    private Button btnUnirse;
+    private Button btnIniciar;
     //Método para unirse a la partida desde la sala de espera
     @FXML
     protected void iniciarPartida(ActionEvent event) {
@@ -36,6 +36,7 @@ public class ControladorSalaEspera {
     * Método para inicializar la sala de espera desde los datos de la pantalla anterior
     */
     public void initData(String nombre, boolean esHost, String ip, Color color, String avatar) {
+        System.out.println("DEBUG: initData iniciado. Host: " + esHost + ", IP: " + ip);
         this.miNombre = nombre;
         this.soyHost = esHost;
         this.yo = new Jugador(nombre, avatar, color);
@@ -63,20 +64,21 @@ public class ControladorSalaEspera {
     }
     //Método para configurar la conexión como host
     private void configurarHost() {
-        btnUnirse.setVisible(true);
-        btnUnirse.setDisable(false);
+        btnIniciar.setVisible(true);
+        btnIniciar.setDisable(true);//modificado
         conexion.iniciarServidor(mensaje -> procesarMensaje(mensaje));
     }
     //Método para configurar la conexión como cliente
     private void configurarCliente(String ipDestino) {
-        btnUnirse.setVisible(false);
-        btnUnirse.setDisable(true);
+        btnIniciar.setVisible(false);
+        btnIniciar.setDisable(true);
         //Conecta al host y establece el manejador de mensajes entrantes
         conexion.conectarAlServidor(ipDestino, mensaje -> procesarMensaje(mensaje));
         new Thread(() ->{
             try {
-                Thread.sleep(500); // Espera medio segundo para asegurar la conexión
+                Thread.sleep(1500); // Espera medio segundo para asegurar la conexión
             } catch (InterruptedException e) { e.printStackTrace(); }
+            //Envia un saludo inicial
             conexion.enviarMensaje("Unirse:" + yo.getNombre() + ":" + yo.getColor());
         }).start();
     }
@@ -89,12 +91,19 @@ public class ControladorSalaEspera {
             String nombreNuevoJugador = partes[1];
             Color colorNuevoJugador = Color.valueOf(partes[2]);
             //Luego vemos lo del avatar
-            //Creamos el nuevo jugador y lo agregamos a la lista logica
-            Jugador nuevoJugador = new Jugador(nombreNuevoJugador, "avatar1.jpg", colorNuevoJugador);
-            jugadoresConectados.add(nuevoJugador);
-            //Agrega el nuevo jugador a la lista visual
-            agregarJugador(nombreNuevoJugador);
-            //Si soy el host, notifico a jugadores(despues se implementará)
+            if (!nombreNuevoJugador.equals(miNombre)) {
+                //Creamos el nuevo jugador y lo agregamos a la lista logica
+                Jugador nuevoJugador = new Jugador(nombreNuevoJugador, "avatar1.jpg", colorNuevoJugador);
+                jugadoresConectados.add(nuevoJugador);
+                //Agrega el nuevo jugador a la lista visual
+                agregarJugador(nombreNuevoJugador);
+                //Si soy el host, notifico a los demas
+                if (soyHost) {
+                    Platform.runLater(() -> btnIniciar.setDisable(false));
+                    //Envio datos a los demas para que me agreguen
+                    conexion.enviarMensaje("Unirse:"+ yo.getNombre() + ":" + yo.getColor());
+                }
+            }
         }
         //En caso de que el host inicia la partida
         else if (mensaje.equals("IniciarPartida")) {

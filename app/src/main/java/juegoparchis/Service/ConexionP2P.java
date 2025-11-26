@@ -16,10 +16,13 @@ public class ConexionP2P {
     private BufferedReader entrada;
     @SuppressWarnings("unused")
     private boolean servidorHost;
+    private Consumer<String> listenerActual;
     //Asignación de puerto para la conexión P2P
     private static final int PUERTO = 4770;
+
     //Método que inicia el servidor
     public void iniciarServidor(Consumer<String> recibirMensaje) {
+        this.listenerActual = recibirMensaje;
         servidorHost = true;
         new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
@@ -27,22 +30,23 @@ public class ConexionP2P {
                     socket = serverSocket.accept();
                     System.out.println("Cliente conectado: " + socket.getInetAddress());
                     configurarFlujos();
-                    escucharMensajes(recibirMensaje);
+                    escucharMensajes(listenerActual);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
     }
     //Lógica de conexión al servidor P2P para el jugador de la partida
-    public void conectarAlServidor(String ipDestino, Consumer<String> recibirMensaje) {
+    public void conectarAlServidor(String ip, Consumer<String> recibirMensaje) {
+        this.listenerActual = recibirMensaje;
         servidorHost = false;
         new Thread(() ->{
             try {
-                System.out.println("Intentando conectar al servidor P2P: " + ipDestino + "...");
-                socket = new Socket(ipDestino, PUERTO);
+                System.out.println("Intentando conectar al servidor P2P: " + ip + "...");
+                socket = new Socket(ip, PUERTO);
                 System.out.println("Conectado al servidor P2P: " + socket.getInetAddress());
                 configurarFlujos();
-                escucharMensajes(recibirMensaje);
+                escucharMensajes(listenerActual);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -59,11 +63,13 @@ public class ConexionP2P {
     public void enviarMensaje(String mensaje) {
         if (salida != null){
             salida.println(mensaje);
-            System.out.println("Mensaje enviado: " + mensaje);
+            System.out.println("DEBUG: Enviando mensaje: " + mensaje);
+        } else {
+            System.out.println("DEBUG ERROR: 'salida' es NULL. No se pudo enviar: " + mensaje);
         }
     }
     //Lógica de escucha de mensajes entrantes
-    private void escucharMensajes(Consumer<String> recibirMensaje) {
+    private void escucharMensajes(Consumer<String> recibirMensajeOriginal) {
         try {
             String mensajeRecibido;
             while ((mensajeRecibido = entrada.readLine()) != null) {
@@ -71,11 +77,16 @@ public class ConexionP2P {
                 final String mensajeFinal = mensajeRecibido;
                 //Logica del juego en el hilo de la interfaz gráfica
                 Platform.runLater(() -> {
-                    recibirMensaje.accept(mensajeFinal);
+                    if (listenerActual != null) {
+                        listenerActual.accept(mensajeFinal);
+                    }
                 });
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
+    //Setter del listener
+    public void setListener(Consumer<String> nuevoListener){
+        this.listenerActual = nuevoListener;
+    }
+
 }

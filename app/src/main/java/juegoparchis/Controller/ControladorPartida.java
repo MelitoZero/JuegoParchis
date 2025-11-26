@@ -24,6 +24,8 @@ import javafx.animation.PauseTransition;
 public class ControladorPartida {
     
     private MotorJuego motorJuego;
+    private ConexionP2P conexion;
+    private Jugador miJugador;
     private Dado dadoModelo;
     @SuppressWarnings("unused")
     private List<Jugador> jugadores;
@@ -50,12 +52,15 @@ public class ControladorPartida {
     //Método para inicializar los datos de la partida
     public void initData(List<Jugador> jugadores, ConexionP2P conexion, Jugador yo) {
         this.jugadores = jugadores;
+        this.conexion = conexion;
+        this.miJugador = yo;
         //Inicializar el motor de juego
         this.motorJuego = new MotorJuego(jugadores);
         //Mostrar las fichas de los jugadores en el tablero
         dibujarFichasJugadores(jugadores);
         //Mostrar el turno del jugador
         actualizarInfoTurno();
+        conexion.setListener(mensaje -> procesarMensajeRed(mensaje));
     }
     //Método para lanzar el dado
     @FXML
@@ -119,8 +124,9 @@ public class ControladorPartida {
     }
     //Método para actualizar la información del turno
     private void actualizarInfoTurno() {
+        //Pregunta al moto del juego quien sigue
         Jugador jugadorActual = motorJuego.getJugadorActual();
-        lblTurnoJugador.setText("Turno de: " + jugadorActual.getNombre());
+        lblTurnoJugador.setText("Turno de: " + jugadorActual.getNombre().toUpperCase());
     }
     //Método para habilitar las fichas movibles
     private void habilitarFichas(List<Ficha> fichasMovibles, int valorDado) {
@@ -178,7 +184,7 @@ public class ControladorPartida {
         Ficha ficha = vista.getFichaModelo();
         int posicionActual = ficha.getPosicionActual();
         int nuevaPosicion;
-        //Lógica para mover la ficha
+        //Lógica para mover la ficha si esta en casa
         if (ficha.isEnCasa()) {
             //Si sale de la casa, asignar la posición inicial según el color
             switch (ficha.getColor()) {
@@ -189,10 +195,10 @@ public class ControladorPartida {
                 default: nuevaPosicion = 1; break;
             }
             ficha.setEnCasa(false);
-        } else {
+        } else { //Lógica  por si  la ficha ya esta en el Tablero 
             //Si ya está en el tablero, avanzar según los pasos
             nuevaPosicion = posicionActual + pasos;
-            if (nuevaPosicion > 68) nuevaPosicion -= 68; //vuelta al tablero 
+            if (nuevaPosicion > 68) nuevaPosicion = nuevaPosicion - 68; //Permite dar la vuelta al tablero
         }
         //Actualizar la posición de la ficha en el modelo
         ficha.setPosicionActual(nuevaPosicion);
@@ -203,8 +209,53 @@ public class ControladorPartida {
             //Cambiar por una animacion despues
             vista.setLayoutX(destino.getX());
             vista.setLayoutY(destino.getY());
-        } else {
-            System.out.println("Error: Coordenada no encontrada para la posición " + nuevaPosicion);//Para depuración
+        }
+        //Solo enviar si es el host quien movio
+        if (motorJuego.getJugadorActual().equals(miJugador)) {
+            String comando = "Mover:" + ficha.getColor() + ":" + ficha.getId() + ":" + nuevaPosicion;
+            conexion.enviarMensaje(comando);
+        }
+    }
+    //Método para recibir ordenes de otro jugador
+    private void procesarMensajeRed(String mensaje){
+        System.out.println("juego recibio: "+ mensaje);
+        //permite mover ficha segun color y su id
+        if (mensaje.startsWith("Mover:")) {
+            String[] partes = mensaje.split(":");
+            Color color = Color.valueOf(partes[1]);
+            int idFicha = Integer.parseInt(partes[2]);
+            int casillaDestino = Integer.parseInt(partes[3]);
+            //Hace el movimiento visual 
+            moverFichaRemota(color, idFicha ,casillaDestino);
+        } else if (mensaje.startsWith("Dado:")) {  //Permite ver el valor de dado que saco otro jugador
+            int valor = Integer.parseInt(mensaje.split(":")[1]);
+            actualizarImgDado(valor);
+        }
+    }
+    //Método para poder mover ficha remota de los demas jugadores
+    private void moverFichaRemota(Color color, int id, int destino){
+        //Busca la ficha visual correcta en el panel
+        for(javafx.scene.Node nodo : panelFichas.getChildren()) {
+            if (nodo instanceof VistaFicha) {
+                VistaFicha vista = (VistaFicha) nodo;
+                Ficha modelo = vista.getFichaModelo();
+                if (modelo.getColor() == color && modelo.getId() == id) {
+                    //Se encontro la ficha, lo mueve
+                    Point2D pos = CoordenadasTablero.getCoordenada(destino);
+                    //Validamos si es pasillo o casa por seguridad
+                    if (pos != null) {
+                        vista.setLayoutX(pos.getX());
+                        vista.setLayoutY(pos.getY());
+                        //Actualizamos el modelo remotamente
+                        modelo.setPosicionActual(destino);
+                        modelo.setEnCasa(false);
+                        //Sinconizar turno visualmente
+                        motorJuego.avanzarTurno();
+                        actualizarInfoTurno();
+                    }
+                    break;
+                }
+            }
         }
     }
 }
