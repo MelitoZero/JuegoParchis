@@ -131,21 +131,24 @@ public class ControladorPartida {
                 Ficha fichaModelo = vista.getFichaModelo();
                 //Si la ficha es movible, habilitarla
                 if (fichasMovibles.contains(fichaModelo)) {
-                    vista.setOpacity(1.0);//Habilitar visualmente
+                    vista.setEffect(new javafx.scene.effect.DropShadow(15, javafx.scene.paint.Color.CHARTREUSE));//Habilitar visualmente
                     vista.setCursor(javafx.scene.Cursor.HAND); //Cambiar cursor a mano
                     //Agregar evento de clic para mover la ficha
                     vista.setOnMouseClicked(e ->{
+                        System.out.println("Clic en ficha " + fichaModelo.getId());//Para depuración
+                        //Mover la ficha seleccionada
                         moverFicha(vista, valorDado);
                         //Desactiva todos los click despues de mover
                         desactivarFichas();
                         //Pausa y pasar turno
+                        //Refla pendiente por si saca 6(repetir turno)
                         motorJuego.avanzarTurno();
                         actualizarInfoTurno();
                         btnTirarDado.setDisable(false); // Habilitar el botón para el siguiente turno
                     });
                 } else {
                     //Deshabilitar visualmente
-                    vista.setOpacity(0.5);
+                    vista.setEffect(null);
                     vista.setCursor(javafx.scene.Cursor.DEFAULT); //Cambiar cursor a default
                     vista.setOnMouseClicked(null); //Eliminar evento de clic
                 }
@@ -173,9 +176,11 @@ public class ControladorPartida {
     //Método para mover la ficha seleccionada
     private void moverFicha(VistaFicha vista, int pasos) {
         Ficha ficha = vista.getFichaModelo();
-        int nuevaPosicion = ficha.getPosicionActual();//Inicia en -1 si etá en casa
+        int posicionActual = ficha.getPosicionActual();
+        int nuevaPosicion;
+        //Lógica para mover la ficha
         if (ficha.isEnCasa()) {
-            //Asignar la posición inicial fuera de casa segun color
+            //Si sale de la casa, asignar la posición inicial según el color
             switch (ficha.getColor()) {
                 case AMARILLO: nuevaPosicion = 5; break;
                 case VERDE: nuevaPosicion = 22; break;
@@ -185,15 +190,21 @@ public class ControladorPartida {
             }
             ficha.setEnCasa(false);
         } else {
-            nuevaPosicion += pasos;
+            //Si ya está en el tablero, avanzar según los pasos
+            nuevaPosicion = posicionActual + pasos;
             if (nuevaPosicion > 68) nuevaPosicion -= 68; //vuelta al tablero 
         }
+        //Actualizar la posición de la ficha en el modelo
         ficha.setPosicionActual(nuevaPosicion);
+        System.out.println("Moviendo ficha "+ ficha.getId() + " a posición " + nuevaPosicion);//Para depuración
         //Mover visualmente la ficha
         Point2D destino = CoordenadasTablero.getCoordenada(nuevaPosicion);
         if (destino != null) {
+            //Cambiar por una animacion despues
             vista.setLayoutX(destino.getX());
             vista.setLayoutY(destino.getY());
+        } else {
+            System.out.println("Error: Coordenada no encontrada para la posición " + nuevaPosicion);//Para depuración
         }
     }
 }

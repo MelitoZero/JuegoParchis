@@ -19,7 +19,7 @@
                   <Image url="@../imgs/Tablerohd.jpg" />
                </image>
             </ImageView>
-            <Pane fx:id="panelFichas" layoutX="-1.0" mouseTransparent="true" />
+            <Pane fx:id="panelFichas" mouseTransparent="false" prefHeight="900.0" prefWidth="900.0" />
          </children>
       </AnchorPane>
    </center>

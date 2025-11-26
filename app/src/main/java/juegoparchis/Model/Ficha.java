@@ -1,7 +1,6 @@
 package juegoparchis.Model;
 
 import java.io.Serializable;
-
 import juegoparchis.Model.Enum.Color;
 
 public class Ficha implements Serializable{
@@ -45,5 +44,17 @@ public class Ficha implements Serializable{
     }
     public void setEnMeta(boolean enMeta) {
         this.enMeta = enMeta;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; //Misma referencia en memoria
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Ficha otra = (Ficha) obj;
+        //Dos fichas son iguales si tienen el mismo id y el mismo color
+        return id == otra.id && color == otra.color;
+    }
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id, color);
     }
 }
