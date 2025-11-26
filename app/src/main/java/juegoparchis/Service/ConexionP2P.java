@@ -18,7 +18,7 @@ public class ConexionP2P {
     private boolean servidorHost;
     //Asignación de puerto para la conexión P2P
     private static final int PUERTO = 4770;
-    //Lógica de iniciación del servidor P2P para el HOST de la partida
+    //Método que inicia el servidor
     public void iniciarServidor(Consumer<String> recibirMensaje) {
         servidorHost = true;
         new Thread(() -> {
@@ -26,7 +26,7 @@ public class ConexionP2P {
                 System.out.println("Servidor P2P iniciado, esperando conexiones en puerto " + PUERTO);
                     socket = serverSocket.accept();
                     System.out.println("Cliente conectado: " + socket.getInetAddress());
-                    configutarFlujos();
+                    configurarFlujos();
                     escucharMensajes(recibirMensaje);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -41,7 +41,7 @@ public class ConexionP2P {
                 System.out.println("Intentando conectar al servidor P2P: " + ipDestino + "...");
                 socket = new Socket(ipDestino, PUERTO);
                 System.out.println("Conectado al servidor P2P: " + socket.getInetAddress());
-                configutarFlujos();
+                configurarFlujos();
                 escucharMensajes(recibirMensaje);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -49,7 +49,7 @@ public class ConexionP2P {
         }).start();
     }
     //Lógica de configuración de los flujos de entrada y salida
-    private void configutarFlujos() throws IOException {
+    private void configurarFlujos() throws IOException {
         //Canal para enviar mensajes
         salida = new PrintWriter(socket.getOutputStream(), true);
         //canal para recibir mensajes
