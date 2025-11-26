@@ -15,26 +15,27 @@ import juegoparchis.Model.Ficha;
 import juegoparchis.Model.Jugador;
 import juegoparchis.Model.Enum.Color;
 import juegoparchis.Service.ConexionP2P;
+import juegoparchis.Service.MotorJuego;
 import juegoparchis.Util.CoordenadasTablero;
 import juegoparchis.View.VistaFicha;
+import javafx.util.Duration;
+import javafx.animation.PauseTransition;    
 
 public class ControladorPartida {
     
+    private MotorJuego motorJuego;
     private Dado dadoModelo;
+    @SuppressWarnings("unused")
+    private List<Jugador> jugadores;
     @FXML
     private Label lblTurnoJugador;
     @FXML
     private Button btnTirarDado;
     @FXML
-    private ImageView imgDado;
-    @FXML
-    private ImageView imgJugador1, imgJugador2, imgJugador3, imgJugador4;
-    @FXML
-    private ImageView imgPerfil1, imgPerfil2;
+    private ImageView imgDado, imgTablero, imgJugador1, imgJugador2, imgJugador3, imgJugador4, imgPerfil1, imgPerfil2;
     @FXML
     private Pane panelFichas;
-    @FXML
-    private ImageView imgTablero;
+    //Método que inicializa el controlador
     @FXML
     public void initialize() {
         // Aquí puedes agregar cualquier inicialización necesaria para el controlador
@@ -48,44 +49,62 @@ public class ControladorPartida {
     }
     //Método para inicializar los datos de la partida
     public void initData(List<Jugador> jugadores, ConexionP2P conexion, Jugador yo) {
-        //Lógica para inicializar la partida con los datos recibidos
-        //Aquí puedes agregar más lógica para configurar la partida
+        this.jugadores = jugadores;
+        //Inicializar el motor de juego
+        this.motorJuego = new MotorJuego(jugadores);
+        //Mostrar las fichas de los jugadores en el tablero
         dibujarFichasJugadores(jugadores);
+        //Mostrar el turno del jugador
+        actualizarInfoTurno();
     }
+    //Método para lanzar el dado
     @FXML
     protected void lanzarDado(ActionEvent event) {
-        //Lógica para lanzar el dado
         btnTirarDado.setDisable(true); // Deshabilitar el botón para evitar múltiples lanzamientos
-        // Simular el lanzamiento del dado
-        int valorDado = dadoModelo.lanzar();
-        System.out.println("Dado lanzado: " + valorDado);
-        // Actualizar la imagen del dado en la interfaz
-        actualizarImgDado(valorDado);
-        //Reactivar el botón despues de terminar el turno
-        //btnTirarDado.setDisable(false);
+        //Pedir al motor de juego que lance el dado
+        int valor = motorJuego.lanzarDado();
+        actualizarImgDado(valor);
+        System.out.println("Dado lanzado: " + valor);//Para depuración
+        //Pedirle al motor de juego las fichas movibles
+        List<Ficha> fichasMovibles = motorJuego.obtenerFichasMovibles(valor);
+        if (fichasMovibles.isEmpty()) {
+            System.out.println("No hay movimientos posibles. Pasa el turno.");
+            pausaYPasarTurno();
+        } else {
+            System.out.println("Selecciona una ficha para mover.");
+            habilitarFichas(fichasMovibles, valor);
+        }    
     }
+    //Método para dibujar las fichas de los jugadores en el tablero
     private void dibujarFichasJugadores(List<Jugador> listaJugadores) {
-        // Lógica para dibujar las fichas en el panelFichas
         panelFichas.getChildren().clear(); // Limpiar fichas anteriores
+
         for (Jugador jugador : listaJugadores) {
+            //Obtener las fichas del jugador
+            Ficha[] mFichas = jugador.getFichas();
             Color color = jugador.getColor();
             for(int i = 0; i < 4; i++){
-                // Crear la ficha lógica del modelo
-                Ficha fichaLogica = new Ficha(i, color);
-                // Obtener la posición de la casa
-                Point2D posicion = CoordenadasTablero.getCoordenadaCasa(color, i);
-                if (posicion != null) {
-                    // Crear la vista de la ficha
-                    VistaFicha vistaFicha = new VistaFicha(fichaLogica, 15);
-                    // Establecer la posición de la vista de la ficha
-                    vistaFicha.setLayoutX(posicion.getX());
-                    vistaFicha.setLayoutY(posicion.getY());
-                    // Agregar la vista de la ficha al panel de fichas
-                    panelFichas.getChildren().add(vistaFicha);
+                //Usamos la ficha del array
+                Ficha fichaLogica = mFichas[i];
+                Point2D posicion = null;
+                //Verificar que la ficha tiene posición de casa
+                if (fichaLogica.isEnCasa()) {
+                    posicion = CoordenadasTablero.getCoordenadaCasa(color, i);
+                }//Si no está en casa, obtener la posición en el tablero
+                else {
+                    posicion = CoordenadasTablero.getCoordenada(fichaLogica.getPosicionActual());
                 }
+                //Dibujar la ficha en el tablero si hay posición valida
+                if (posicion != null) {
+                        VistaFicha vistaFicha = new VistaFicha(fichaLogica, 15);
+                        vistaFicha.setLayoutX(posicion.getX());
+                        vistaFicha.setLayoutY(posicion.getY());
+                        panelFichas.getChildren().add(vistaFicha);
+                    }
             }
         }
     }
+    //Método para actualizar la imagen del dado
     private void actualizarImgDado(int valor) {
         // Lógica para actualizar la imagen del dado en la interfaz
         try {
@@ -98,5 +117,83 @@ public class ControladorPartida {
             e.printStackTrace();
         }
     }
-
+    //Método para actualizar la información del turno
+    private void actualizarInfoTurno() {
+        Jugador jugadorActual = motorJuego.getJugadorActual();
+        lblTurnoJugador.setText("Turno de: " + jugadorActual.getNombre());
+    }
+    //Método para habilitar las fichas movibles
+    private void habilitarFichas(List<Ficha> fichasMovibles, int valorDado) {
+        //Recorrer las fichas en el panelFichas
+        for (javafx.scene.Node nodo : panelFichas.getChildren()) {
+            if (nodo instanceof VistaFicha) {
+                VistaFicha vista = (VistaFicha) nodo;
+                Ficha fichaModelo = vista.getFichaModelo();
+                //Si la ficha es movible, habilitarla
+                if (fichasMovibles.contains(fichaModelo)) {
+                    vista.setOpacity(1.0);//Habilitar visualmente
+                    vista.setCursor(javafx.scene.Cursor.HAND); //Cambiar cursor a mano
+                    //Agregar evento de clic para mover la ficha
+                    vista.setOnMouseClicked(e ->{
+                        moverFicha(vista, valorDado);
+                        //Desactiva todos los click despues de mover
+                        desactivarFichas();
+                        //Pausa y pasar turno
+                        motorJuego.avanzarTurno();
+                        actualizarInfoTurno();
+                        btnTirarDado.setDisable(false); // Habilitar el botón para el siguiente turno
+                    });
+                } else {
+                    //Deshabilitar visualmente
+                    vista.setOpacity(0.5);
+                    vista.setCursor(javafx.scene.Cursor.DEFAULT); //Cambiar cursor a default
+                    vista.setOnMouseClicked(null); //Eliminar evento de clic
+                }
+            }
+        }
+    }
+    //Método para desactivar todas las fichas
+    private void desactivarFichas(){
+        for (javafx.scene.Node nodo : panelFichas.getChildren()) {
+            nodo.setOpacity(1.0);//Habilitar visualmente
+            nodo.setOnMouseClicked(null);//Eliminar evento de clic
+        }
+    }
+    //Método para pausar y pasar turno
+    private void pausaYPasarTurno(){
+        // Crear una pausa de 2 segundos antes de pasar el turno
+        PauseTransition pausa = new PauseTransition(Duration.seconds(2));
+        pausa.setOnFinished(event -> {
+            motorJuego.avanzarTurno();
+            actualizarInfoTurno();
+            btnTirarDado.setDisable(false); // Habilitar el botón para el siguiente turno
+        });
+        pausa.play();// Iniciar la pausa
+    }
+    //Método para mover la ficha seleccionada
+    private void moverFicha(VistaFicha vista, int pasos) {
+        Ficha ficha = vista.getFichaModelo();
+        int nuevaPosicion = ficha.getPosicionActual();//Inicia en -1 si etá en casa
+        if (ficha.isEnCasa()) {
+            //Asignar la posición inicial fuera de casa segun color
+            switch (ficha.getColor()) {
+                case AMARILLO: nuevaPosicion = 5; break;
+                case VERDE: nuevaPosicion = 22; break;
+                case ROJO: nuevaPosicion = 39; break;
+                case AZUL: nuevaPosicion = 56; break;
+                default: nuevaPosicion = 1; break;
+            }
+            ficha.setEnCasa(false);
+        } else {
+            nuevaPosicion += pasos;
+            if (nuevaPosicion > 68) nuevaPosicion -= 68; //vuelta al tablero 
+        }
+        ficha.setPosicionActual(nuevaPosicion);
+        //Mover visualmente la ficha
+        Point2D destino = CoordenadasTablero.getCoordenada(nuevaPosicion);
+        if (destino != null) {
+            vista.setLayoutX(destino.getX());
+            vista.setLayoutY(destino.getY());
+        }
+    }
 }

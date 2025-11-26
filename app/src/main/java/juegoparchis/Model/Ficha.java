@@ -1,8 +1,10 @@
 package juegoparchis.Model;
 
+import java.io.Serializable;
+
 import juegoparchis.Model.Enum.Color;
 
-public class Ficha {
+public class Ficha implements Serializable{
     
     private int id; //Identificador unico de la ficha
     private Color color; //Color de la ficha

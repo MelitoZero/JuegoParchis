@@ -8,14 +8,18 @@ public class Jugador implements Serializable {
    private String nombre;
    private String avatar;
    private Color color;
-   private int fichasEnCasa;
+   private Ficha[] fichas;
 
    //Constructor
    public Jugador(String nombre, String avatar, Color color) {
       this.nombre = nombre;
       this.avatar = avatar;
       this.color = color;
-      this.fichasEnCasa = 4; // Inicialmente, todas las fichas están en casa
+      //Inicializar las 4 fichas del jugador
+      this.fichas = new Ficha[4];
+      for (int i = 0; i < 4; i++) {
+         this.fichas[i] = new Ficha(i, color);
+      }
    }
    
    //Getters y Setters
@@ -37,10 +41,16 @@ public class Jugador implements Serializable {
    public void setColor(Color color) {
       this.color = color;
    }
-   public int getFichasEnCasa() {
-      return fichasEnCasa;
+   public Ficha[] getFichas() {
+      return fichas;
    }
-   public void setFichasEnCasa(int fichasEnCasa) {
-      this.fichasEnCasa = fichasEnCasa;
+   public int getFichasEnCasa(){
+      int contador = 0;
+      for (Ficha f : fichas) {
+         if (f.isEnCasa()) {
+            contador++;
+         }
+      }
+      return contador;
    }
 }
