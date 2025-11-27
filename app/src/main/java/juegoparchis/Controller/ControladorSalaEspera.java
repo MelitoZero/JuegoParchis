@@ -84,61 +84,45 @@ public class ControladorSalaEspera {
     private void procesarMensaje(String mensaje) {
         //En caso de que alguien se une
         if (mensaje.startsWith("Unirse:")) {
-            String[] partes = mensaje.split(":");
-            String nombreNuevoJugador = partes[1];
-            Color colorNuevoJugador = Color.valueOf(partes[2]);
-            //Luego vemos lo del avatar
-            if (!nombreNuevoJugador.equals(miNombre)) {
-                boolean yaExiste = jugadoresConectados.stream().anyMatch(j -> j.getNombre().equals(nombreNuevoJugador));
+            if (soyHost) {
+                String[] partes = mensaje.split(":");
+                String nombre = partes[1];
+                Color color = Color.valueOf(partes[2]);
+                //Valida si ya existe
+                boolean yaExiste = jugadoresConectados.stream().anyMatch(j -> j.getNombre().equals(nombre));
                 if (!yaExiste) {
-                    //Creamos el nuevo jugador y lo agregamos a la lista logica
-                    Jugador nuevo = new Jugador(nombreNuevoJugador, "avatar1.jpg", colorNuevoJugador);
-                    jugadoresConectados.add(nuevo);
+                    //Agrega el jugador a la lista
+                    jugadoresConectados.add(new Jugador(nombre, "avatar", color));
+                    //Actualiza la lista visual
                     actualizarListaVisual();
-                    //Si soy el host, notifico a los demas
-                    if (soyHost) {
-                        Platform.runLater(() -> btnIniciar.setDisable(false));
-                        //Envio datos a los demas para que me agreguen
-                        conexion.enviarMensaje("Bienvenido:"+ yo.getNombre() + ":" + yo.getColor());
-                        //Presenta los demas jugadores a los nuevos conectados
-                        for (Jugador existente : jugadoresConectados){
-                            //Evita que se repitan el nombre del host y suyo
-                            if (!existente.getNombre().equals(nombreNuevoJugador) && !existente.getNombre().equals(miNombre)) {
-                                try{ Thread.sleep(100);} catch (Exception e) {}
-                                conexion.enviarMensaje("Unirse:" + existente.getNombre() + ":" + existente.getColor());
-                            }
+                    Platform.runLater(() -> btnIniciar.setDisable(false));
+                    //Envia la lista actualizada a todos
+                    enviarListaActualizada();
+                }
+            }
+        }else if (mensaje.startsWith("Lista:")){
+            if (!soyHost) {
+                // Limpiamos la lista desordenada local
+                jugadoresConectados.clear();
+                // Parseamos la lista del Host
+                String data = mensaje.substring(6); // Quitar "Lista:"
+                String[] jugadoresRaw = data.split(",");
+                for (String jRaw : jugadoresRaw) {
+                    if (!jRaw.isEmpty()) {
+                        String[] partes = jRaw.split(":");
+                        String nombre = partes[0];
+                        Color color = Color.valueOf(partes[1]);
+                        // Reconstruimos el objeto Jugador
+                        if (nombre.equals(miNombre)) {
+                            jugadoresConectados.add(yo);
+                        } else {
+                            jugadoresConectados.add(new Jugador(nombre, "avatar", color));
                         }
                     }
                 }
+                System.out.println("Lista sincronizada con el Host: " + jugadoresConectados.size());
+                actualizarListaVisual();                
             }
-        }else if (mensaje.startsWith("Bienvenido:")){ //El host saluda
-                String[] partes = mensaje.split(":");
-                String nombreHost = partes[1];
-                Color colorHost = Color.valueOf(partes[2]);
-                Jugador hostJugador = new Jugador(nombreHost, "avatar1.jpg", colorHost);
-                jugadoresConectados.add(0, hostJugador);
-                actualizarListaVisual();
-        }else if (mensaje.startsWith("Lista:")){
-            // Limpiamos la lista desordenada local
-            jugadoresConectados.clear();
-            // Parseamos la lista del Host
-            String data = mensaje.substring(6); // Quitar "Lista:"
-            String[] jugadoresRaw = data.split(",");
-            for (String jRaw : jugadoresRaw) {
-                if (!jRaw.isEmpty()) {
-                    String[] partes = jRaw.split(":");
-                    String nombre = partes[0];
-                    Color color = Color.valueOf(partes[1]);
-                    // Reconstruimos el objeto Jugador
-                    if (nombre.equals(miNombre)) {
-                        jugadoresConectados.add(yo);
-                    } else {
-                        jugadoresConectados.add(new Jugador(nombre, "avatar", color));
-                    }
-                }
-            }
-            System.out.println("Lista sincronizada con el Host: " + jugadoresConectados.size());
-            actualizarListaVisual();
         }else if (mensaje.equals("IniciarPartida")) { //En caso de que el host inicia la partida
             Platform.runLater(this::irAlTablero);
         }
@@ -150,9 +134,17 @@ public class ControladorSalaEspera {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/View/VistaTablero.fxml"));
             javafx.scene.Parent root = loader.load();
             //Obtener el controlador de la pantalla del tablero
-            ControladorPartida controladorPartida = loader.getController();
+            ControladorPartida controlador = loader.getController();
+            //Buscar el yo en la lista de jugadores actualizada
+            Jugador nuevoYo = null;
+            for (Jugador j : jugadoresConectados){
+                if (j.getNombre().equals(miNombre)) {
+                    nuevoYo = j;
+                    break;
+                }
+            }
             //Inicializar los datos de la partida en el controlador
-            controladorPartida.initData(jugadoresConectados, conexion, yo);
+            controlador.initData(jugadoresConectados, conexion, nuevoYo);
             javafx.stage.Stage stage = (javafx.stage.Stage) vboxJugadores.getScene().getWindow();
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
@@ -176,5 +168,14 @@ public class ControladorSalaEspera {
                 i++;
             }
         });
+    }
+    // Método exclusivo del Host para sincronizar a todos
+    private void enviarListaActualizada() {
+        if (!soyHost) return;
+        StringBuilder sb = new StringBuilder("Lista:");
+        for (Jugador j : jugadoresConectados) {
+            sb.append(j.getNombre()).append(":").append(j.getColor()).append(",");
+        }
+        conexion.enviarMensaje(sb.toString());
     }
 }

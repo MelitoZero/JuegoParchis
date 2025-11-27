@@ -138,11 +138,6 @@ public class ControladorPartida {
                         moverFicha(vista, valorDado);
                         //Desactiva todos los click despues de mover
                         desactivarFichas();
-                        //Pausa y pasar turno
-                        //Refla pendiente por si saca 6(repetir turno)
-                        motorJuego.avanzarTurno();
-                        actualizarInfoTurno();
-                        btnTirarDado.setDisable(false); // Habilitar el botón para el siguiente turno
                     });
                 } else {
                     //Deshabilitar visualmente
