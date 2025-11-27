@@ -53,4 +53,16 @@ public class Jugador implements Serializable {
       }
       return contador;
    }
+   @Override
+   public boolean equals(Object obj){
+      if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+      Jugador otro = (Jugador) obj;
+      // Comparamos por NOMBRE (o Color), que es único
+      return this.nombre.equals(otro.nombre);
+   }
+   @Override
+    public int hashCode() {
+        return nombre.hashCode();
+    }
 }

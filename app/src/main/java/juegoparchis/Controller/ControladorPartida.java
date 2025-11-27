@@ -19,7 +19,8 @@ import juegoparchis.Service.MotorJuego;
 import juegoparchis.Util.CoordenadasTablero;
 import juegoparchis.View.VistaFicha;
 import javafx.util.Duration;
-import javafx.animation.PauseTransition;    
+import javafx.animation.PauseTransition; 
+import juegoparchis.Model.Movimiento;   
 
 public class ControladorPartida {
     
@@ -70,6 +71,10 @@ public class ControladorPartida {
         int valor = motorJuego.lanzarDado();
         actualizarImgDado(valor);
         System.out.println("Dado lanzado: " + valor);//Para depuración
+        //Enviar el valor del dado a los demas jugadores
+        if (conexion != null) {
+            conexion.enviarMensaje("Dado:" + valor);
+        }
         //Pedirle al motor de juego las fichas movibles
         List<Ficha> fichasMovibles = motorJuego.obtenerFichasMovibles(valor);
         if (fichasMovibles.isEmpty()) {
@@ -83,7 +88,6 @@ public class ControladorPartida {
     //Método para dibujar las fichas de los jugadores en el tablero
     private void dibujarFichasJugadores(List<Jugador> listaJugadores) {
         panelFichas.getChildren().clear(); // Limpiar fichas anteriores
-
         for (Jugador jugador : listaJugadores) {
             //Obtener las fichas del jugador
             Ficha[] mFichas = jugador.getFichas();
@@ -124,12 +128,24 @@ public class ControladorPartida {
     }
     //Método para actualizar la información del turno
     private void actualizarInfoTurno() {
-        //Pregunta al moto del juego quien sigue
+        //Pregunta al motor del juego quien sigue
         Jugador jugadorActual = motorJuego.getJugadorActual();
         lblTurnoJugador.setText("Turno de: " + jugadorActual.getNombre().toUpperCase());
+        //Valida que sea yo(jugador local)
+        if (jugadorActual.equals(miJugador)) {
+            //El turno mio(jugador local)
+            btnTirarDado.setDisable(false);
+        }else {
+            //Es turno de otro jugador
+            btnTirarDado.setDisable(true);
+        }
     }
     //Método para habilitar las fichas movibles
     private void habilitarFichas(List<Ficha> fichasMovibles, int valorDado) {
+        //Si no es mi turno(jugador local)
+        if (!motorJuego.getJugadorActual().equals(miJugador)) {
+            return;
+        }
         //Recorrer las fichas en el panelFichas
         for (javafx.scene.Node nodo : panelFichas.getChildren()) {
             if (nodo instanceof VistaFicha) {
@@ -210,50 +226,58 @@ public class ControladorPartida {
             vista.setLayoutX(destino.getX());
             vista.setLayoutY(destino.getY());
         }
-        //Solo enviar si es el host quien movio
-        if (motorJuego.getJugadorActual().equals(miJugador)) {
-            String comando = "Mover:" + ficha.getColor() + ":" + ficha.getId() + ":" + nuevaPosicion;
-            conexion.enviarMensaje(comando);
+        //Solo envia si soy yo(jugador local) el que esta moviendo(mi turno)
+        if (motorJuego.getJugadorActual().getNombre().equals(miJugador.getNombre())) {
+            //Mueve segun su color, el id de la ficha y su casilla destino
+            Movimiento mov = new Movimiento(ficha.getColor(), ficha.getId(), nuevaPosicion);
+            conexion.enviarMensaje(mov.toString());
         }
     }
     //Método para recibir ordenes de otro jugador
     private void procesarMensajeRed(String mensaje){
-        System.out.println("juego recibio: "+ mensaje);
+        System.out.println("Juego recibio: "+ mensaje);
         //permite mover ficha segun color y su id
         if (mensaje.startsWith("Mover:")) {
-            String[] partes = mensaje.split(":");
-            Color color = Color.valueOf(partes[1]);
-            int idFicha = Integer.parseInt(partes[2]);
-            int casillaDestino = Integer.parseInt(partes[3]);
-            //Hace el movimiento visual 
-            moverFichaRemota(color, idFicha ,casillaDestino);
-        } else if (mensaje.startsWith("Dado:")) {  //Permite ver el valor de dado que saco otro jugador
-            int valor = Integer.parseInt(mensaje.split(":")[1]);
-            actualizarImgDado(valor);
+            Movimiento mov = Movimiento.desdeString(mensaje);
+            if (mov != null) {
+                //Hace el movimiento visual 
+                moverFichaRemota(mov.getColor(), mov.getIdFicha(), mov.getDestino());
+            }
+        } else if (mensaje.startsWith("Dado:")) { //Permite ver el valor de dado que saco otro jugador
+            try {
+                int valor = Integer.parseInt(mensaje.split(":")[1]);
+                actualizarImgDado(valor);
+                System.out.println("El rival saco un: " + valor);
+            } catch (Exception e) {
+                System.out.println("Error al procesar dado remoto");
+            }
         }
     }
     //Método para poder mover ficha remota de los demas jugadores
-    private void moverFichaRemota(Color color, int id, int destino){
+    private void moverFichaRemota(Color color, int id, int casillaDestino){
         //Busca la ficha visual correcta en el panel
         for(javafx.scene.Node nodo : panelFichas.getChildren()) {
+            //Verifica si es una ficha
             if (nodo instanceof VistaFicha) {
                 VistaFicha vista = (VistaFicha) nodo;
                 Ficha modelo = vista.getFichaModelo();
+                //Identificar si es la ficha que se seleccionó
                 if (modelo.getColor() == color && modelo.getId() == id) {
                     //Se encontro la ficha, lo mueve
-                    Point2D pos = CoordenadasTablero.getCoordenada(destino);
+                    System.out.println("Moviendo ficha remota: " + color + " " + id + " a " + casillaDestino);
+                    Point2D destino = CoordenadasTablero.getCoordenada(casillaDestino);
                     //Validamos si es pasillo o casa por seguridad
-                    if (pos != null) {
-                        vista.setLayoutX(pos.getX());
-                        vista.setLayoutY(pos.getY());
+                    if (destino != null) {
+                        vista.setLayoutX(destino.getX());
+                        vista.setLayoutY(destino.getY());
                         //Actualizamos el modelo remotamente
-                        modelo.setPosicionActual(destino);
+                        modelo.setPosicionActual(casillaDestino);
                         modelo.setEnCasa(false);
                         //Sinconizar turno visualmente
                         motorJuego.avanzarTurno();
                         actualizarInfoTurno();
                     }
-                    break;
+                    break; //Ya encontrado, dejamos de buscar
                 }
             }
         }
