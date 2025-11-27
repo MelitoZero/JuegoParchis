@@ -19,18 +19,18 @@
       </ImageView>
       <Pane layoutX="304.0" layoutY="131.0" prefHeight="460.0" prefWidth="480.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblJugador" layoutX="40.0" layoutY="26.0" styleClass="letras-jugadores-estilo" text="Nombre del Jugador">
+            <Label fx:id="lblJugador" layoutX="40.0" layoutY="26.0" styleClass="letras-estilo" text="Nombre del Jugador">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
             <TextField fx:id="txtJugador" layoutX="60.0" layoutY="69.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblAvatar" layoutX="78.0" layoutY="274.0" styleClass="letras-jugadores-estilo" text="Avatar">
+            <Label fx:id="lblAvatar" layoutX="78.0" layoutY="274.0" styleClass="letras-estilo" text="Avatar">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblSala" layoutX="41.0" layoutY="147.0" styleClass="letras-jugadores-estilo" text="Codigo Sala">
+            <Label fx:id="lblSala" layoutX="41.0" layoutY="147.0" styleClass="letras-estilo" text="Codigo Sala">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>
@@ -48,7 +48,7 @@
             <TextField fx:id="txtCodigoSala" layoutX="60.0" layoutY="198.0" prefHeight="65.0" prefWidth="352.0" styleClass="textfield-estilo" />
             <ComboBox fx:id="cboxAvatar" layoutX="41.0" layoutY="317.0" prefWidth="150.0" promptText="Avatar1" styleClass="panel-seleccion-color-avatar" visibleRowCount="4" />
             <ComboBox fx:id="cboxColor" layoutX="279.0" layoutY="317.0" prefWidth="150.0" promptText="Rojo" styleClass="panel-seleccion-color-avatar" visibleRowCount="4" />
-            <Label fx:id="lblColor" layoutX="292.0" layoutY="274.0" styleClass="letras-jugadores-estilo" text="Color Ficha">
+            <Label fx:id="lblColor" layoutX="292.0" layoutY="274.0" styleClass="letras-estilo" text="Color Ficha">
                <font>
                   <Font name="Franklin Gothic Medium" size="18.0" />
                </font>

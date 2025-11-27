@@ -19,13 +19,13 @@
       </ImageView>
       <Pane layoutX="240.0" layoutY="145.0" prefHeight="430.0" prefWidth="600.0" styleClass="Menu-estilo" stylesheets="@Estilos.css">
          <children>
-            <Label fx:id="lblPartida" layoutX="174.0" layoutY="14.0" styleClass="letras-jugadores-estilo" text="Nombre de la Partida">
+            <Label fx:id="lblPartida" layoutX="174.0" layoutY="14.0" styleClass="letras-estilo" text="Nombre de la Partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
             <TextField fx:id="txtPartida" layoutX="88.0" layoutY="69.0" prefHeight="65.0" prefWidth="410.0" styleClass="textfield-estilo" />
-            <Label fx:id="lblCodigo" layoutX="194.0" layoutY="148.0" styleClass="letras-jugadores-estilo" text="Codigo de partida">
+            <Label fx:id="lblCodigo" layoutX="194.0" layoutY="148.0" styleClass="letras-estilo" text="Codigo de partida">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
