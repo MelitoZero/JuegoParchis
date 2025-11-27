@@ -190,7 +190,7 @@ public class ControladorPartida {
             actualizarInfoTurno(); //Se acaba mi turno
             String nombreSiguiente = motorJuego.getJugadorActual().getNombre();
             System.out.println("Debug: Aviso de cambio de turno a " + nombreSiguiente);
-            //Mueve segun su color, el id de la ficha y su casilla destino
+            //Envia
             Movimiento mov = new Movimiento(ficha.getColor(), ficha.getId(), ficha.getPosicionActual(), nombreSiguiente, ficha.isEnPasillo());
             conexion.enviarMensaje(mov.toFormatoString());
         }

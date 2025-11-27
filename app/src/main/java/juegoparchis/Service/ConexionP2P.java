@@ -8,85 +8,99 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import javafx.application.Platform;
 import java.util.function.Consumer;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConexionP2P {
+    //Para cliente
+    private Socket socketCliente;
+    private PrintWriter salidaCliente;
+    private BufferedReader entradaCliente;
+    //Para servidor
+    private List<ClienteHandler> clientes = new CopyOnWriteArrayList<>();
+    private boolean soyHost;
+    private Consumer<String> listenerUI;
+    private static final int PUERTO = 4770; //Asignación de puerto para la conexión P2P
 
-    private Socket socket;
-    private PrintWriter salida;
-    private BufferedReader entrada;
-    @SuppressWarnings("unused")
-    private boolean servidorHost;
-    private Consumer<String> listenerActual;
-    //Asignación de puerto para la conexión P2P
-    private static final int PUERTO = 4770;
-
-    //Método que inicia el servidor
-    public void iniciarServidor(Consumer<String> recibirMensaje) {
-        this.listenerActual = recibirMensaje;
-        servidorHost = true;
+    //Método que inicia el servidor para servidor
+    public void iniciarServidor(Consumer<String> listener) {
+        this.listenerUI = listener;
+        this.soyHost = true;
         new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
-                System.out.println("Servidor P2P iniciado, esperando conexiones en puerto " + PUERTO);
-                    socket = serverSocket.accept();
-                    System.out.println("Cliente conectado: " + socket.getInetAddress());
-                    configurarFlujos();
-                    escucharMensajes(listenerActual);
+                System.out.println("Servidor P2P iniciado en puerto " + PUERTO);
+                //permite escuchar conexiones entrantes
+                while (true) {
+                    Socket socketNuevo = serverSocket.accept();
+                    System.out.println("Nuevo jugador conectado: " + socketNuevo.getInetAddress());
+                    ClienteHandler handler = new ClienteHandler(socketNuevo, this);
+                    clientes.add(handler);
+                    handler.start(); 
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
+    }
+    //Método para procesar mensaje
+    public synchronized void procesarMensajeDesdeCliente(String mensaje, ClienteHandler remitente) {
+        notificarUI(mensaje);
+        broadcast(mensaje);
+    }
+    //Método para eliminar jugador
+    public void eliminarCliente(ClienteHandler cliente) {
+        clientes.remove(cliente);
     }
     //Lógica de conexión al servidor P2P para el jugador de la partida
-    public void conectarAlServidor(String ip, Consumer<String> recibirMensaje) {
-        this.listenerActual = recibirMensaje;
-        servidorHost = false;
+    public void conectarAlServidor(String ip, Consumer<String> listener) {
+        this.listenerUI = listener;
+        this.soyHost = false;
         new Thread(() ->{
             try {
-                System.out.println("Intentando conectar al servidor P2P: " + ip + "...");
-                socket = new Socket(ip, PUERTO);
-                System.out.println("Conectado al servidor P2P: " + socket.getInetAddress());
-                configurarFlujos();
-                escucharMensajes(listenerActual);
+                System.out.println("Conectando al Host: " + ip + "...");
+                socketCliente = new Socket(ip, PUERTO);
+                System.out.println("Conexión exitosa");
+                // Configurar flujos (Solo necesito uno porque soy cliente)
+                salidaCliente = new PrintWriter(socketCliente.getOutputStream(), true);
+                entradaCliente = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
+                escucharHost();
             } catch (IOException e) {
+                System.out.println("Error al conectar al Host" + e.getMessage());
                 e.printStackTrace();
             }
         }).start();
     }
-    //Lógica de configuración de los flujos de entrada y salida
-    private void configurarFlujos() throws IOException {
-        //Canal para enviar mensajes
-        salida = new PrintWriter(socket.getOutputStream(), true);
-        //canal para recibir mensajes
-        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    //Método para escuchar mensajes del host
+    private void escucharHost(){
+        try {
+            String mensaje;
+            while ((mensaje = entradaCliente.readLine()) != null){
+                notificarUI(mensaje);
+            }
+        } catch (IOException e) { System.out.println("Error, no se pudo escuchar al host"); }
     }
-    //Lógica de envío de mensajes
+    //Método de envio de mensajes
     public void enviarMensaje(String mensaje) {
-        if (salida != null){
-            salida.println(mensaje);
-            System.out.println("DEBUG: Enviando mensaje: " + mensaje);
-        } else {
-            System.out.println("DEBUG ERROR: 'salida' es NULL. No se pudo enviar: " + mensaje);
+        System.out.println("Enviando:" + mensaje);//Depuracion
+        if (soyHost) {
+            //Envia mensaje a todos los conectados
+            broadcast(mensaje);
+        } else { //Si no soy host 
+            if (salidaCliente != null) salidaCliente.println(mensaje);
         }
     }
-    //Lógica de escucha de mensajes entrantes
-    private void escucharMensajes(Consumer<String> recibirMensajeOriginal) {
-        try {
-            String mensajeRecibido;
-            while ((mensajeRecibido = entrada.readLine()) != null) {
-                System.out.println("Mensaje recibido: " + mensajeRecibido);
-                final String mensajeFinal = mensajeRecibido;
-                //Logica del juego en el hilo de la interfaz gráfica
-                Platform.runLater(() -> {
-                    if (listenerActual != null) {
-                        listenerActual.accept(mensajeFinal);
-                    }
-                });
-            }
-        } catch (IOException e) { e.printStackTrace(); }
+    //Método para enviar mensajes a todos los jugadores conectados
+    private void broadcast(String mensaje){
+        for (ClienteHandler c : clientes) {
+            c.enviar(mensaje);
+        }
+    }
+    //Método para subir a la interfaz el mensaje recibido
+    private void notificarUI(String mensaje){
+        Platform.runLater(() -> {
+            if (listenerUI != null) listenerUI.accept(mensaje);
+        });
     }
     //Setter del listener
-    public void setListener(Consumer<String> nuevoListener){
-        this.listenerActual = nuevoListener;
-    }
-
+    public void setListener(Consumer<String> l){ this.listenerUI = l; }
 }

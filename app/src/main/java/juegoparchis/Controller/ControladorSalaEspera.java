@@ -27,9 +27,19 @@ public class ControladorSalaEspera {
     //Método para unirse a la partida desde la sala de espera
     @FXML
     protected void iniciarPartida(ActionEvent event) {
-        //Avisar a los jugadores que la partida va a iniciar
-        conexion.enviarMensaje("IniciarPartida");
-        irAlTablero();
+        //Hace una lista con todos los jugadores
+        StringBuilder sb = new StringBuilder("Lista:");
+        for (Jugador j : jugadoresConectados) {
+            sb.append(j.getNombre()).append(":").append(j.getColor()).append(",");
+        }
+        //Envia la lista de jugadores a todos
+        conexion.enviarMensaje(sb.toString());
+        //Arranca el tablero
+        new Thread(() ->{
+           try { Thread.sleep(500); } catch (Exception e) {}
+            conexion.enviarMensaje("IniciarPartida");
+            Platform.runLater(this::irAlTablero); // El Host también va 
+        }).start();
     }
     //Método para inicializar la sala de espera desde los datos de la pantalla anterior
     public void initData(String nombre, boolean esHost, String ip, Color color, String avatar) {
@@ -72,7 +82,6 @@ public class ControladorSalaEspera {
     }
     //Método para procesar los mensajes entrantes
     private void procesarMensaje(String mensaje) {
-        System.out.println("Procesando mensaje: " + mensaje);//Para depuración
         //En caso de que alguien se une
         if (mensaje.startsWith("Unirse:")) {
             String[] partes = mensaje.split(":");
@@ -80,15 +89,26 @@ public class ControladorSalaEspera {
             Color colorNuevoJugador = Color.valueOf(partes[2]);
             //Luego vemos lo del avatar
             if (!nombreNuevoJugador.equals(miNombre)) {
-                //Creamos el nuevo jugador y lo agregamos a la lista logica
-                Jugador nuevoJugador = new Jugador(nombreNuevoJugador, "avatar1.jpg", colorNuevoJugador);
-                jugadoresConectados.add(nuevoJugador);
-                actualizarListaVisual();
-                //Si soy el host, notifico a los demas
-                if (soyHost) {
-                    Platform.runLater(() -> btnIniciar.setDisable(false));
-                    //Envio datos a los demas para que me agreguen
-                    conexion.enviarMensaje("Bienvenido:"+ yo.getNombre() + ":" + yo.getColor());
+                boolean yaExiste = jugadoresConectados.stream().anyMatch(j -> j.getNombre().equals(nombreNuevoJugador));
+                if (!yaExiste) {
+                    //Creamos el nuevo jugador y lo agregamos a la lista logica
+                    Jugador nuevo = new Jugador(nombreNuevoJugador, "avatar1.jpg", colorNuevoJugador);
+                    jugadoresConectados.add(nuevo);
+                    actualizarListaVisual();
+                    //Si soy el host, notifico a los demas
+                    if (soyHost) {
+                        Platform.runLater(() -> btnIniciar.setDisable(false));
+                        //Envio datos a los demas para que me agreguen
+                        conexion.enviarMensaje("Bienvenido:"+ yo.getNombre() + ":" + yo.getColor());
+                        //Presenta los demas jugadores a los nuevos conectados
+                        for (Jugador existente : jugadoresConectados){
+                            //Evita que se repitan el nombre del host y suyo
+                            if (!existente.getNombre().equals(nombreNuevoJugador) && !existente.getNombre().equals(miNombre)) {
+                                try{ Thread.sleep(100);} catch (Exception e) {}
+                                conexion.enviarMensaje("Unirse:" + existente.getNombre() + ":" + existente.getColor());
+                            }
+                        }
+                    }
                 }
             }
         }else if (mensaje.startsWith("Bienvenido:")){ //El host saluda
@@ -98,6 +118,27 @@ public class ControladorSalaEspera {
                 Jugador hostJugador = new Jugador(nombreHost, "avatar1.jpg", colorHost);
                 jugadoresConectados.add(0, hostJugador);
                 actualizarListaVisual();
+        }else if (mensaje.startsWith("Lista:")){
+            // Limpiamos la lista desordenada local
+            jugadoresConectados.clear();
+            // Parseamos la lista del Host
+            String data = mensaje.substring(6); // Quitar "Lista:"
+            String[] jugadoresRaw = data.split(",");
+            for (String jRaw : jugadoresRaw) {
+                if (!jRaw.isEmpty()) {
+                    String[] partes = jRaw.split(":");
+                    String nombre = partes[0];
+                    Color color = Color.valueOf(partes[1]);
+                    // Reconstruimos el objeto Jugador
+                    if (nombre.equals(miNombre)) {
+                        jugadoresConectados.add(yo);
+                    } else {
+                        jugadoresConectados.add(new Jugador(nombre, "avatar", color));
+                    }
+                }
+            }
+            System.out.println("Lista sincronizada con el Host: " + jugadoresConectados.size());
+            actualizarListaVisual();
         }else if (mensaje.equals("IniciarPartida")) { //En caso de que el host inicia la partida
             Platform.runLater(this::irAlTablero);
         }
@@ -122,7 +163,7 @@ public class ControladorSalaEspera {
     //Método para actualizar la lista visual de jugadores
     private void actualizarListaVisual() {
         Platform.runLater(() -> {
-            vboxJugadores.getChildren().clear(); // Borrar todo
+            vboxJugadores.getChildren().clear(); // Borra todo
             int i = 1;
             for (Jugador j : jugadoresConectados) {
                 String texto = i + ": " + j.getNombre();
@@ -130,7 +171,7 @@ public class ControladorSalaEspera {
                     texto += " (Yo)";
                 }
                 Label lbl = new Label(texto);
-                lbl.getStyleClass().add("letras-jugadores-estilo"); // Tu estilo CSS
+                lbl.getStyleClass().add("letras-jugadores-estilo");
                 vboxJugadores.getChildren().add(lbl);
                 i++;
             }
