@@ -63,6 +63,7 @@
     -fx-font-family: "Corbel";
     -fx-font-weight: bold;
     -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, white, 8, 0, 0, 0); /* Sombra blanca que simula borde */
 }
 
 .letras-Ganadores-estilo{
