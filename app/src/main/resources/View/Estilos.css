@@ -58,7 +58,7 @@
 }
 
 .letras-estilo{
-    /* diseño para quee las letras se vean bonitas */
+    /* 2do diseño porque al quintana no le gusto con degradado */
     -fx-font-size: 28px;
     -fx-font-family: "Corbel";
     -fx-font-weight: bold;
