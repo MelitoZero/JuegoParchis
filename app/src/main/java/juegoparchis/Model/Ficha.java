@@ -10,6 +10,7 @@ public class Ficha implements Serializable{
     private int posicionActual; //Desde 0 hasta 68, -1 es en casa
     private boolean enCasa;
     private boolean enMeta;
+    private boolean enPasillo;
 
     public Ficha(int id, Color color) {
         this.id = id;
@@ -17,6 +18,7 @@ public class Ficha implements Serializable{
         this.posicionActual = -1; //Inicialmente en casa
         this.enCasa = true;
         this.enMeta = false;
+        this.enPasillo = false;
     }
     public int getId() {
         return id;
@@ -44,6 +46,12 @@ public class Ficha implements Serializable{
     }
     public void setEnMeta(boolean enMeta) {
         this.enMeta = enMeta;
+    }
+    public boolean isEnPasillo() {
+        return enPasillo;
+    }
+    public void setEnPasillo(boolean enPasillo) {
+        this.enPasillo = enPasillo;
     }
     @Override
     public boolean equals(Object obj) {

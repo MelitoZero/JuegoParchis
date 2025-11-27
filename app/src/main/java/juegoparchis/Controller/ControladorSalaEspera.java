@@ -76,7 +76,7 @@ public class ControladorSalaEspera {
         conexion.conectarAlServidor(ipDestino, mensaje -> procesarMensaje(mensaje));
         new Thread(() ->{
             try {
-                Thread.sleep(1500); // Espera medio segundo para asegurar la conexión
+                Thread.sleep(500); // Espera medio segundo para asegurar la conexión
             } catch (InterruptedException e) { e.printStackTrace(); }
             //Envia un saludo inicial
             conexion.enviarMensaje("Unirse:" + yo.getNombre() + ":" + yo.getColor());

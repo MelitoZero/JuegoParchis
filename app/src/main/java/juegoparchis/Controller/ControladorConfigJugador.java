@@ -96,5 +96,4 @@ public class ControladorConfigJugador {
         NavegacionPantallas.cambiarPantalla(event, "/View/VistaInicio.fxml");
         }
     }
-
 }
