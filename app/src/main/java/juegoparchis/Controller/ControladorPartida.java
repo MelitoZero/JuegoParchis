@@ -165,9 +165,15 @@ public class ControladorPartida {
         // Crear una pausa de 2 segundos antes de pasar el turno
         PauseTransition pausa = new PauseTransition(Duration.seconds(2));
         pausa.setOnFinished(event -> {
+            //Cambia el turno localmente
             motorJuego.avanzarTurno();
             actualizarInfoTurno();
-            btnTirarDado.setDisable(false); // Habilitar el botón para el siguiente turno
+            //Avisar  al otro jugador
+            if (conexion != null) {
+                String quienSigue = motorJuego.getJugadorActual().getNombre();
+                System.out.println("Debug: Aviso de cambio de turno a " + quienSigue);
+                conexion.enviarMensaje("Turno:" + quienSigue);
+            }
         });
         pausa.play();// Iniciar la pausa
     }
@@ -183,30 +189,44 @@ public class ControladorPartida {
             motorJuego.avanzarTurno();
             actualizarInfoTurno(); //Se acaba mi turno
             String nombreSiguiente = motorJuego.getJugadorActual().getNombre();
+            System.out.println("Debug: Aviso de cambio de turno a " + nombreSiguiente);
             //Mueve segun su color, el id de la ficha y su casilla destino
             Movimiento mov = new Movimiento(ficha.getColor(), ficha.getId(), ficha.getPosicionActual(), nombreSiguiente, ficha.isEnPasillo());
-            if (conexion != null) conexion.enviarMensaje(mov.toFormatoString());
+            conexion.enviarMensaje(mov.toFormatoString());
         }
     }
     //Método para recibir ordenes de otro jugador
     private void procesarMensajeRed(String mensaje){
         System.out.println("Juego recibio: "+ mensaje);
-        //permite mover ficha segun color y su id
-        if (mensaje.startsWith("Mover:")) {
-            Movimiento mov = Movimiento.desdeFormatoString(mensaje);
-            if (mov != null) {
-                //Hace el movimiento visual 
-                moverFichaRemota(mov);
+        javafx.application.Platform.runLater(() ->{
+            //permite mover ficha segun color y su id
+            if (mensaje.startsWith("Mover:")) {
+                Movimiento mov = Movimiento.desdeFormatoString(mensaje);
+                if (mov != null) {
+                    //Hace el movimiento visual 
+                    moverFichaRemota(mov);
+                }
+            }else if (mensaje.startsWith("Dado:")) { //Permite ver el valor de dado que saco otro jugador
+                try {
+                    int valor = Integer.parseInt(mensaje.split(":")[1]);
+                    actualizarImgDado(valor);
+                    System.out.println("El rival saco un: " + valor);
+                } catch (Exception e) {
+                    System.out.println("Error al procesar dado remoto");
+                }
+            }else if(mensaje.startsWith("Turno:")){
+                try {
+                    String nombreSiguiente = mensaje.split(":")[1];
+                    //Sincroniza el motor
+                    motorJuego.setTurno(nombreSiguiente);
+                    //actualiza visualmente
+                    actualizarInfoTurno();
+                    System.out.println("Sincronizando turno. Ahora le toca a: " + nombreSiguiente);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } else if (mensaje.startsWith("Dado:")) { //Permite ver el valor de dado que saco otro jugador
-            try {
-                int valor = Integer.parseInt(mensaje.split(":")[1]);
-                actualizarImgDado(valor);
-                System.out.println("El rival saco un: " + valor);
-            } catch (Exception e) {
-                System.out.println("Error al procesar dado remoto");
-            }
-        }
+        });  
     }
     //Método para poder mover ficha remota de los demas jugadores
     private void moverFichaRemota(Movimiento mov){
@@ -223,8 +243,10 @@ public class ControladorPartida {
                 modelo.setEnPasillo(mov.isEnPasillo());
                 actualizarPosicionVisual(vista);
                 //Sinconizar turno visualmente
-                motorJuego.setTurno(mov.getSiguienteJugador());
+                String quienSigue = mov.getSiguienteJugador();
+                motorJuego.setTurno(quienSigue);
                 actualizarInfoTurno();
+                System.out.println("Sincronizando turno. Ahora le toca a: " + quienSigue);
         }
     }
     //Método para actualizar la posición visual de la ficha

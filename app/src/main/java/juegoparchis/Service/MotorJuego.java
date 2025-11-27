@@ -34,6 +34,7 @@ public class MotorJuego {
         for (int i = 0; i < jugadores.size(); i++) {
             if (jugadores.get(i).getNombre().equals(nombreJugador)) {
                 this.indiceTurnoActual = i;
+                System.out.println("DEBUG: Turno forzado a " + nombreJugador);
                 return;
             }
         }
@@ -52,6 +53,7 @@ public class MotorJuego {
         }
         return movibles;
     }
+    
     //Método para mover una ficha
     public void realizarMovimiento(Ficha ficha, int pasos){
         //Sale de casa
@@ -95,6 +97,7 @@ public class MotorJuego {
             ficha.setPosicionActual(nueva);
         }
     }
+
     //Método para mover una ficha en el pasillo
     private int obtenerEntradaPasillo(Color c) {
         switch (c) {
@@ -105,6 +108,7 @@ public class MotorJuego {
             default: return 0;
         }
     }
+    
     //Método para mover una ficha en el pasillo
     private void moverEnPasillo(Ficha ficha, int posicion) {
        if (posicion > 8) { // Rebote

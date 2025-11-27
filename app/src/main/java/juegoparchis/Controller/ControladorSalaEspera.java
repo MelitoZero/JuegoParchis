@@ -31,10 +31,7 @@ public class ControladorSalaEspera {
         conexion.enviarMensaje("IniciarPartida");
         irAlTablero();
     }
-
-    /**
-    * Método para inicializar la sala de espera desde los datos de la pantalla anterior
-    */
+    //Método para inicializar la sala de espera desde los datos de la pantalla anterior
     public void initData(String nombre, boolean esHost, String ip, Color color, String avatar) {
         System.out.println("DEBUG: initData iniciado. Host: " + esHost + ", IP: " + ip);
         this.miNombre = nombre;
@@ -42,25 +39,16 @@ public class ControladorSalaEspera {
         this.yo = new Jugador(nombre, avatar, color);
         this.jugadoresConectados.add(yo);
         this.conexion = new ConexionP2P();
+        if(conexion == null) System.out.println("ERROR FATAL: La conexión llegó NULL");
+        else System.out.println("Conexión recibida correctamente");
         //Mostrar mi nombre en la lista de jugadores
-        agregarJugador(miNombre + " (Yo)");
+        actualizarListaVisual();
         //Si es el host, habilita el botón para iniciar la partida
         if (soyHost) {
             configurarHost();
         } else {
             configurarCliente(ip);
         }
-    }
-    //Método para actualizar la lista de jugadores en la sala de espera
-    public void agregarJugador(String nombre) {
-        Platform.runLater(() -> {
-            //Crea un label por cada jugador en la sala de espera
-            Label jugadorLabel = new Label(nombre);
-            //Establece el estilo del label
-            jugadorLabel.getStyleClass().add("letras-jugadores-estilo");
-                    //Agrega el label al VBox que contiene la lista de jugadores
-        vboxJugadores.getChildren().add(jugadorLabel);
-        });
     }
     //Método para configurar la conexión como host
     private void configurarHost() {
@@ -95,18 +83,22 @@ public class ControladorSalaEspera {
                 //Creamos el nuevo jugador y lo agregamos a la lista logica
                 Jugador nuevoJugador = new Jugador(nombreNuevoJugador, "avatar1.jpg", colorNuevoJugador);
                 jugadoresConectados.add(nuevoJugador);
-                //Agrega el nuevo jugador a la lista visual
-                agregarJugador(nombreNuevoJugador);
+                actualizarListaVisual();
                 //Si soy el host, notifico a los demas
                 if (soyHost) {
                     Platform.runLater(() -> btnIniciar.setDisable(false));
                     //Envio datos a los demas para que me agreguen
-                    conexion.enviarMensaje("Unirse:"+ yo.getNombre() + ":" + yo.getColor());
+                    conexion.enviarMensaje("Bienvenido:"+ yo.getNombre() + ":" + yo.getColor());
                 }
             }
-        }
-        //En caso de que el host inicia la partida
-        else if (mensaje.equals("IniciarPartida")) {
+        }else if (mensaje.startsWith("Bienvenido:")){ //El host saluda
+                String[] partes = mensaje.split(":");
+                String nombreHost = partes[1];
+                Color colorHost = Color.valueOf(partes[2]);
+                Jugador hostJugador = new Jugador(nombreHost, "avatar1.jpg", colorHost);
+                jugadoresConectados.add(0, hostJugador);
+                actualizarListaVisual();
+        }else if (mensaje.equals("IniciarPartida")) { //En caso de que el host inicia la partida
             Platform.runLater(this::irAlTablero);
         }
     }
@@ -126,5 +118,22 @@ public class ControladorSalaEspera {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    //Método para actualizar la lista visual de jugadores
+    private void actualizarListaVisual() {
+        Platform.runLater(() -> {
+            vboxJugadores.getChildren().clear(); // Borrar todo
+            int i = 1;
+            for (Jugador j : jugadoresConectados) {
+                String texto = i + ": " + j.getNombre();
+                if (j.getNombre().equals(miNombre)) {
+                    texto += " (Yo)";
+                }
+                Label lbl = new Label(texto);
+                lbl.getStyleClass().add("letras-jugadores-estilo"); // Tu estilo CSS
+                vboxJugadores.getChildren().add(lbl);
+                i++;
+            }
+        });
     }
 }
