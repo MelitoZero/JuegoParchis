@@ -119,14 +119,16 @@ public class ControladorPartida {
     //Método para habilitar las fichas movibles
     private void habilitarFichas(List<Ficha> fichasMovibles, int valorDado) {
         //Si no es mi turno(jugador local)
-        if (!motorJuego.getJugadorActual().equals(miJugador)) {
-            return;
-        }
+        if (!motorJuego.getJugadorActual().equals(miJugador)) return;
         //Recorrer las fichas en el panelFichas
         for (javafx.scene.Node nodo : panelFichas.getChildren()) {
             if (nodo instanceof VistaFicha) {
                 VistaFicha vista = (VistaFicha) nodo;
                 Ficha fichaModelo = vista.getFichaModelo();
+                //Verifica que la ficha sea de mi color
+                if (fichaModelo.getColor() != miJugador.getColor()) {
+                    continue;
+                }
                 //Si la ficha es movible, habilitarla
                 if (fichasMovibles.contains(fichaModelo)) {
                     vista.setEffect(new javafx.scene.effect.DropShadow(15, javafx.scene.paint.Color.CHARTREUSE));//Habilitar visualmente
@@ -177,17 +179,23 @@ public class ControladorPartida {
         Ficha ficha = vista.getFichaModelo();
         //Logica para mover la ficha
         motorJuego.realizarMovimiento(ficha, pasos);
-        //Actualización visual
-        actualizarPosicionVisual(vista);
-        //Solo envia si soy yo(jugador local) el que esta moviendo(mi turno)
+        //Actualizar tablero si se come ficha
+        gestorFicha.dibujarFichasIniciales(jugadores);
+        //Envia si soy yo(jugador local) el que esta moviendo(mi turno)
         if (motorJuego.getJugadorActual().getNombre().equals(miJugador.getNombre())) {
-            motorJuego.avanzarTurno();
+            if (pasos != 6) {
+                motorJuego.avanzarTurno();
+            }else {
+                System.out.println("Sacastes 6, repites turno");
+                //Reactivamos boton para volver a tirar
+                btnTirarDado.setDisable(false);
+            }
             actualizarInfoTurno(); //Se acaba mi turno
             String nombreSiguiente = motorJuego.getJugadorActual().getNombre();
             System.out.println("Debug: Aviso de cambio de turno a " + nombreSiguiente);
             //Envia
             Movimiento mov = new Movimiento(ficha.getColor(), ficha.getId(), ficha.getPosicionActual(), nombreSiguiente, ficha.isEnPasillo());
-            conexion.enviarMensaje(mov.toFormatoString());
+            if (conexion != null) conexion.enviarMensaje(mov.toFormatoString());
         }
     }
     //Método para recibir ordenes de otro jugador
@@ -236,7 +244,11 @@ public class ControladorPartida {
                 modelo.setPosicionActual(destinoMov);
                 modelo.setEnCasa(false);
                 modelo.setEnPasillo(mov.isEnPasillo());
+                //Verificamos si se come ficha
+                motorJuego.verificarYComer(modelo, destinoMov);
                 actualizarPosicionVisual(vista);
+                //Aseguramos dibujar denuevo la ficha
+                gestorFicha.dibujarFichasIniciales(jugadores);
                 //Sinconizar turno visualmente
                 String quienSigue = mov.getSiguienteJugador();
                 motorJuego.setTurno(quienSigue);

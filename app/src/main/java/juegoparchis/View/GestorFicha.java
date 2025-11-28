@@ -21,9 +21,12 @@ public class GestorFicha {
         for (Jugador jugador : jugadores) {
             for (Ficha ficha : jugador.getFichas()) {
                 Point2D pos = null;
+                //Cuando esta en casa
                 if (ficha.isEnCasa()) {
                     pos = CoordenadasTablero.getCoordenadaCasa(ficha.getColor(), ficha.getId());
-                } else {
+                } else if (ficha.isEnPasillo()){ //Cuando esta en pasillo
+                    pos = CoordenadasTablero.getCoordenadaPasillo(ficha.getColor(), ficha.getPosicionActual() - 1);
+                }else { //Cuando esta en tablero normal
                     pos = CoordenadasTablero.getCoordenada(ficha.getPosicionActual());
                 }
                 if (pos != null) {

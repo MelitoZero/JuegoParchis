@@ -70,4 +70,8 @@ public class Tablero {
     public List<Casilla> getCasillas() {
         return casillas;
     }
+    public Casilla getCasilla(int numero){
+        if (numero < 1 || numero > casillas.size()) return null;
+        return casillas.get(numero - 1);
+    }
 }
