@@ -9,14 +9,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.geometry.Point2D;
 import juegoparchis.Model.Dado;
 import juegoparchis.Model.Ficha;
 import juegoparchis.Model.Jugador;
 import juegoparchis.Model.Enum.Color;
 import juegoparchis.Service.ConexionP2P;
 import juegoparchis.Service.MotorJuego;
-import juegoparchis.Util.CoordenadasTablero;
+import juegoparchis.Util.NavegacionPantallas;
 import juegoparchis.View.GestorFicha;
 import juegoparchis.View.VistaFicha;
 import javafx.util.Duration;
@@ -30,7 +29,6 @@ public class ControladorPartida {
     private Jugador miJugador;
     private Dado dadoModelo;
     private GestorFicha gestorFicha;
-    @SuppressWarnings("unused")
     private List<Jugador> jugadores;
     @FXML
     private Label lblTurnoJugador;
@@ -40,6 +38,7 @@ public class ControladorPartida {
     private ImageView imgDado, imgTablero, imgJugador1, imgJugador2, imgJugador3, imgJugador4, imgPerfil1, imgPerfil2;
     @FXML
     private Pane panelFichas;
+
     //Método que inicializa el controlador
     @FXML
     public void initialize() {
@@ -52,6 +51,7 @@ public class ControladorPartida {
         dadoModelo = new Dado();
         actualizarImgDado(dadoModelo.getValor());
     }
+
     //Método para inicializar los datos de la partida
     public void initData(List<Jugador> jugadores, ConexionP2P conexion, Jugador yo) {
         this.jugadores = jugadores;
@@ -66,6 +66,7 @@ public class ControladorPartida {
         //Configurar la conexión con el servidor
         conexion.setListener(mensaje -> procesarMensajeRed(mensaje));
     }
+
     //Método para lanzar el dado
     @FXML
     protected void lanzarDado(ActionEvent event) {
@@ -88,6 +89,7 @@ public class ControladorPartida {
             habilitarFichas(fichasMovibles, valor);
         }    
     }
+
     //Método para actualizar la imagen del dado
     private void actualizarImgDado(int valor) {
         // Lógica para actualizar la imagen del dado en la interfaz
@@ -101,6 +103,7 @@ public class ControladorPartida {
             e.printStackTrace();
         }
     }
+
     //Método para actualizar la información del turno
     private void actualizarInfoTurno() {
         //Pregunta al motor del juego quien sigue
@@ -116,6 +119,7 @@ public class ControladorPartida {
             btnTirarDado.setDisable(true);
         }
     }
+
     //Método para habilitar las fichas movibles
     private void habilitarFichas(List<Ficha> fichasMovibles, int valorDado) {
         //Si no es mi turno(jugador local)
@@ -150,6 +154,7 @@ public class ControladorPartida {
             }
         }
     }
+
     //Método para desactivar todas las fichas
     private void desactivarFichas(){
         for (javafx.scene.Node nodo : panelFichas.getChildren()) {
@@ -157,6 +162,7 @@ public class ControladorPartida {
             nodo.setOnMouseClicked(null);//Eliminar evento de clic
         }
     }
+
     //Método para pausar y pasar turno
     private void pausaYPasarTurno(){
         // Crear una pausa de 2 segundos antes de pasar el turno
@@ -174,6 +180,7 @@ public class ControladorPartida {
         });
         pausa.play();// Iniciar la pausa
     }
+
     //Método para mover la ficha seleccionada
     private void moverFicha(VistaFicha vista, int pasos) {
         Ficha ficha = vista.getFichaModelo();
@@ -181,6 +188,16 @@ public class ControladorPartida {
         motorJuego.realizarMovimiento(ficha, pasos);
         //Actualizar tablero si se come ficha
         gestorFicha.dibujarFichasIniciales(jugadores);
+        //Lógica de anuncio de victoria
+        if(motorJuego.verificarGanador(miJugador)){
+            System.out.println("Ganaste!!");
+            String ganadorYo = miJugador.getNombre();
+            Movimiento mov = new Movimiento(ficha.getColor(), ficha.getId(), ficha.getPosicionActual(), ganadorYo, ficha.isEnPasillo());
+            if(conexion != null) conexion.enviarMensaje(mov.toFormatoString());
+            mostrarMensajeGanador("Felicidades", "¡Ganastes el juego!");
+            terminarJuego();
+            return;
+        }
         //Envia si soy yo(jugador local) el que esta moviendo(mi turno)
         if (motorJuego.getJugadorActual().getNombre().equals(miJugador.getNombre())) {
             if (pasos != 6) {
@@ -198,6 +215,7 @@ public class ControladorPartida {
             if (conexion != null) conexion.enviarMensaje(mov.toFormatoString());
         }
     }
+
     //Método para recibir ordenes de otro jugador
     private void procesarMensajeRed(String mensaje){
         System.out.println("Juego recibio: "+ mensaje);
@@ -231,24 +249,30 @@ public class ControladorPartida {
             }
         });  
     }
+
     //Método para poder mover ficha remota de los demas jugadores
     private void moverFichaRemota(Movimiento mov){
         Color colorMov = mov.getColor();
         int idFichaMov = mov.getIdFicha();
         int destinoMov = mov.getDestino();
         VistaFicha vista = gestorFicha.buscarFichaVisual(colorMov, idFichaMov);
-        Ficha modelo = vista.getFichaModelo();
         if (vista != null) {
-             System.out.println("Moviendo ficha remota: " + colorMov + " " + idFichaMov + " a " + destinoMov);
+            Ficha modelo = vista.getFichaModelo();
+            System.out.println("Moviendo ficha remota: " + colorMov + " " + idFichaMov + " a " + destinoMov);
                 //Se encontro la ficha, lo mueve
                 modelo.setPosicionActual(destinoMov);
                 modelo.setEnCasa(false);
                 modelo.setEnPasillo(mov.isEnPasillo());
                 //Verificamos si se come ficha
                 motorJuego.verificarYComer(modelo, destinoMov);
-                actualizarPosicionVisual(vista);
                 //Aseguramos dibujar denuevo la ficha
                 gestorFicha.dibujarFichasIniciales(jugadores);
+                Jugador rival = buscarJugadorColor(colorMov);
+                if(rival != null && motorJuego.verificarGanador(rival)){
+                    mostrarMensajeGanador("Fin de la partida", "El jugador " + rival.getNombre() + " ganó.");
+                    terminarJuego();
+                    return;
+                }
                 //Sinconizar turno visualmente
                 String quienSigue = mov.getSiguienteJugador();
                 motorJuego.setTurno(quienSigue);
@@ -256,20 +280,30 @@ public class ControladorPartida {
                 System.out.println("Sincronizando turno. Ahora le toca a: " + quienSigue);
         }
     }
-    //Método para actualizar la posición visual de la ficha
-    private void actualizarPosicionVisual(VistaFicha vista){
-        Ficha ficha = vista.getFichaModelo();
-        Point2D destino;
-        if (ficha.isEnPasillo()) {
-            // -1 por la lista que empieza en 0
-            destino = CoordenadasTablero.getCoordenadaPasillo(ficha.getColor(), ficha.getPosicionActual() - 1);
-        } else {
-            destino = CoordenadasTablero.getCoordenada(ficha.getPosicionActual());
-        }
 
-        if (destino != null) {
-            vista.setLayoutX(destino.getX());
-            vista.setLayoutY(destino.getY());
-        }
+    //Método para mostrar mensaje de ganador
+    private void mostrarMensajeGanador(String titulo, String mensaje) {
+        javafx.application.Platform.runLater(() -> {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+            alert.setTitle("Partida acabada");
+            alert.setHeaderText(titulo);
+            alert.setContentText(mensaje);
+            alert.showAndWait();
+            NavegacionPantallas.cambiarPantalla(null, "/View/VistaMenu.fxml");
+        });
     }
+
+    //Método para terminar el juego
+    private void terminarJuego() {
+        btnTirarDado.setDisable(true);
+        panelFichas.setMouseTransparent(true);
+    }
+    //Método para buscar jugador por color
+    private Jugador buscarJugadorColor(Color c){
+        for (Jugador j : jugadores) {
+            if (j.getColor() == c) return j;
+        }
+        return null;
+    }
+
 }

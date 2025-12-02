@@ -161,10 +161,23 @@ public class MotorJuego {
                 }
             }
         }
-    }    
+    }
+
     //Método para ver si entra a pasillo
     private void entrarAPasillo(Ficha ficha, int posicionPasillo){
         ficha.setEnPasillo(true); // Marcamos que ya no está en tablero
         moverEnPasillo(ficha, posicionPasillo);
-   } 
+   }
+   
+   //Método para verificar quien es el ganador
+   public boolean verificarGanador(Jugador jugador) {
+    int cuenta = 0;
+    for (Ficha f : jugador.getFichas()) {
+      if(f.isEnMeta()){
+        cuenta++;
+      }  
+    }
+    //Si hay 4 fichas en meta el jugador gana
+    return cuenta == 4;
+   }
 }
