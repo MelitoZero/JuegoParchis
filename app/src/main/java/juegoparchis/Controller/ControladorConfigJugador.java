@@ -76,6 +76,11 @@ public class ControladorConfigJugador {
         // Inicializar ComboBox de avatares
         cboxAvatar.getItems().addAll("Avatar1", "Avatar2", "Avatar3", "Avatar4");
         cboxAvatar.getSelectionModel().selectFirst();
+        txtJugador.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 10) {
+                txtJugador.setText(oldValue);
+            }
+        });
         //Copiar la Ip si es host
         txtCodigoSala.setOnMouseClicked(event ->{
             if (soyHost && !txtCodigoSala.getText().isEmpty()) {

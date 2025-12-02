@@ -24,24 +24,24 @@
       </AnchorPane>
    </center>
    <left>
-      <AnchorPane prefHeight="900.0" prefWidth="230.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxWidth="230.0" minWidth="230.0" prefHeight="900.0" prefWidth="230.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="imgPerfil1" fitHeight="900.0" fitWidth="230.0" pickOnBounds="true">
                <image>
                   <Image url="@../imgs/Perfil.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblJugador1" layoutX="15.0" layoutY="14.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 1">
+            <Label fx:id="lblJugador1" layoutX="15.0" layoutY="14.0" maxWidth="200.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 1">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblTurnoJugador" layoutX="5.0" layoutY="318.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="TURNO DE:">
+            <Label fx:id="lblTurnoJugador" layoutX="5.0" layoutY="318.0" maxWidth="200.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="TURNO DE:">
                <font>
                   <Font name="SansSerif Regular" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblJugador2" layoutX="15.0" layoutY="692.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 2">
+            <Label fx:id="lblJugador2" layoutX="15.0" layoutY="692.0" maxWidth="200.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 2">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
@@ -66,19 +66,19 @@
       </AnchorPane>
    </left>
    <right>
-      <AnchorPane prefHeight="900.0" prefWidth="230.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxWidth="230.0" minWidth="230.0" prefHeight="900.0" prefWidth="230.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="imgPerfil2" fitHeight="900.0" fitWidth="230.0" pickOnBounds="true">
                <image>
                   <Image url="@../imgs/Perfil.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblJugador3" layoutX="14.0" layoutY="14.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 3">
+            <Label fx:id="lblJugador3" layoutX="14.0" layoutY="14.0" maxWidth="200.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 3">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblJugador4" layoutX="14.0" layoutY="696.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 4">
+            <Label fx:id="lblJugador4" layoutX="14.0" layoutY="696.0" maxWidth="200.0" styleClass="letras-jugadores-estilo" stylesheets="@Estilos.css" text="JUGADOR 4">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
