@@ -14,7 +14,6 @@ import juegoparchis.Service.ConexionP2P;
 import juegoparchis.Model.Jugador;
 
 public class ControladorSalaEspera {
-    //Atributos de la clase
     private Jugador yo;
     private List<Jugador> jugadoresConectados = new ArrayList<>();
     private ConexionP2P conexion;
@@ -24,8 +23,8 @@ public class ControladorSalaEspera {
     private VBox vboxJugadores;
     @FXML
     private Button btnIniciar;
-    //Método para unirse a la partida desde la sala de espera
-    @FXML
+
+    @FXML //Método para unirse a la partida desde la sala de espera
     protected void iniciarPartida(ActionEvent event) {
         //Hace una lista con todos los jugadores
         StringBuilder sb = new StringBuilder("Lista:");
@@ -41,9 +40,9 @@ public class ControladorSalaEspera {
             Platform.runLater(this::irAlTablero); // El Host también va 
         }).start();
     }
+
     //Método para inicializar la sala de espera desde los datos de la pantalla anterior
     public void initData(String nombre, boolean esHost, String ip, Color color, String avatar) {
-        System.out.println("DEBUG: initData iniciado. Host: " + esHost + ", IP: " + ip);
         this.miNombre = nombre;
         this.soyHost = esHost;
         this.yo = new Jugador(nombre, avatar, color);
@@ -60,12 +59,14 @@ public class ControladorSalaEspera {
             configurarCliente(ip);
         }
     }
+
     //Método para configurar la conexión como host
     private void configurarHost() {
         btnIniciar.setVisible(true);
         btnIniciar.setDisable(true);//modificado
         conexion.iniciarServidor(mensaje -> procesarMensaje(mensaje));
     }
+
     //Método para configurar la conexión como cliente
     private void configurarCliente(String ipDestino) {
         btnIniciar.setVisible(false);
@@ -80,6 +81,7 @@ public class ControladorSalaEspera {
             conexion.enviarMensaje("Unirse:" + yo.getNombre() + ":" + yo.getColor());
         }).start();
     }
+
     //Método para procesar los mensajes entrantes
     private void procesarMensaje(String mensaje) {
         //En caso de que alguien se une
@@ -120,13 +122,13 @@ public class ControladorSalaEspera {
                         }
                     }
                 }
-                System.out.println("Lista sincronizada con el Host: " + jugadoresConectados.size());
                 actualizarListaVisual();                
             }
         }else if (mensaje.equals("IniciarPartida")) { //En caso de que el host inicia la partida
             Platform.runLater(this::irAlTablero);
         }
     }
+
     //Método para ir a la pantalla del tablero
     private void irAlTablero() {
         try {
@@ -152,6 +154,7 @@ public class ControladorSalaEspera {
             e.printStackTrace();
         }
     }
+
     //Método para actualizar la lista visual de jugadores
     private void actualizarListaVisual() {
         Platform.runLater(() -> {
@@ -169,6 +172,7 @@ public class ControladorSalaEspera {
             }
         });
     }
+
     // Método exclusivo del Host para sincronizar a todos
     private void enviarListaActualizada() {
         if (!soyHost) return;

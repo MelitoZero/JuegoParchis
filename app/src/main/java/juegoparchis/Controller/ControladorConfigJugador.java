@@ -19,8 +19,8 @@ public class ControladorConfigJugador {
     @FXML
     private Button btnUnirse, btnVolver;
     private boolean soyHost = false;
-    //Método para unirse a una partida
-    @FXML
+    
+    @FXML //Método para unirse a una partida
     protected void unirsePartida(ActionEvent event) {
         String nombreJugador = txtJugador.getText();
         String ip = txtCodigoSala.getText();
@@ -44,6 +44,7 @@ public class ControladorConfigJugador {
             e.printStackTrace();
         }  
     }
+
     //Método para establecer si el jugador es host o no
     public void setModoHost(boolean esHost, String ipHost) {
         this.soyHost = esHost;
@@ -62,6 +63,7 @@ public class ControladorConfigJugador {
 
         }
     }
+
     @FXML
     public void initialize() {
         cboxColor.getItems().clear();
@@ -88,12 +90,12 @@ public class ControladorConfigJugador {
                 final javafx.scene.input.ClipboardContent contenido = new javafx.scene.input.ClipboardContent();
                 contenido.putString(txtCodigoSala.getText());
                 copiado.setContent(contenido);
-                System.out.println("Ip copiado al portapapeles"); //Para depuración
             }
         });
     }
-    //Método para volver a la pantalla anterior
-    @FXML
+
+    
+    @FXML //Método para volver a la pantalla anterior
     protected void Volver(ActionEvent event) {
         if (soyHost) {
         NavegacionPantallas.cambiarPantalla(event, "/View/VistaConfigPartida.fxml"); 

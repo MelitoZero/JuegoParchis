@@ -22,7 +22,6 @@ public class CoordenadasTablero {
 
     private static void cargarCoordenadas() {
         // Aquí se inicializarán las coordenadas para el recorrido y los pasillos
-        //Ejemplo de inicialización (deberías completar todas las coordenadas necesarias)
         recorrido.put(1, new Point2D(542.0, 878.0));
         recorrido.put(2, new Point2D(542.0, 833.0));
         recorrido.put(3, new Point2D(542.0, 788.0));

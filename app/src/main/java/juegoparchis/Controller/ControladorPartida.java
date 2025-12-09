@@ -39,8 +39,7 @@ public class ControladorPartida {
     @FXML
     private Pane panelFichas;
 
-    //Método que inicializa el controlador
-    @FXML
+    @FXML //Método que inicializa el controlador
     public void initialize() {
         // Aquí puedes agregar cualquier inicialización necesaria para el controlador
         /*imgTablero.setOnMouseClicked(event ->{
@@ -67,14 +66,12 @@ public class ControladorPartida {
         conexion.setListener(mensaje -> procesarMensajeRed(mensaje));
     }
 
-    //Método para lanzar el dado
-    @FXML
+    @FXML //Método para lanzar el dado
     protected void lanzarDado(ActionEvent event) {
         btnTirarDado.setDisable(true); // Deshabilitar el botón para evitar múltiples lanzamientos
         //Pedir al motor de juego que lance el dado
         int valor = motorJuego.lanzarDado();
         actualizarImgDado(valor);
-        System.out.println("Dado lanzado: " + valor);//Para depuración
         //Enviar el valor del dado a los demas jugadores
         if (conexion != null) {
             conexion.enviarMensaje("Dado:" + valor);
@@ -82,10 +79,8 @@ public class ControladorPartida {
         //Pedirle al motor de juego las fichas movibles
         List<Ficha> fichasMovibles = motorJuego.obtenerFichasMovibles(valor);
         if (fichasMovibles.isEmpty()) {
-            System.out.println("No hay movimientos posibles. Pasa el turno.");
             pausaYPasarTurno();
         } else {
-            System.out.println("Selecciona una ficha para mover.");
             habilitarFichas(fichasMovibles, valor);
         }    
     }
@@ -109,7 +104,6 @@ public class ControladorPartida {
         //Pregunta al motor del juego quien sigue
         Jugador jugadorDelTurno = motorJuego.getJugadorActual();
         lblTurnoJugador.setText("Turno de: " + jugadorDelTurno.getNombre());
-        System.out.println("Turno ACTUAL ES de: " + jugadorDelTurno.getNombre() + " | Yo soy: " + miJugador.getNombre());
         //Valida que sea yo(jugador local)
         if (jugadorDelTurno.getNombre().equals(miJugador.getNombre())) {
             //El turno mio(jugador local)
@@ -139,7 +133,6 @@ public class ControladorPartida {
                     vista.setCursor(javafx.scene.Cursor.HAND); //Cambiar cursor a mano
                     //Agregar evento de clic para mover la ficha
                     vista.setOnMouseClicked(e ->{
-                        System.out.println("Clic en ficha " + fichaModelo.getId());//Para depuración
                         //Mover la ficha seleccionada
                         moverFicha(vista, valorDado);
                         //Desactiva todos los click despues de mover
@@ -174,7 +167,6 @@ public class ControladorPartida {
             //Avisar  al otro jugador
             if (conexion != null) {
                 String quienSigue = motorJuego.getJugadorActual().getNombre();
-                System.out.println("Debug: Aviso de cambio de turno a " + quienSigue);
                 conexion.enviarMensaje("Turno:" + quienSigue);
             }
         });
@@ -209,7 +201,6 @@ public class ControladorPartida {
             }
             actualizarInfoTurno(); //Se acaba mi turno
             String nombreSiguiente = motorJuego.getJugadorActual().getNombre();
-            System.out.println("Debug: Aviso de cambio de turno a " + nombreSiguiente);
             //Envia
             Movimiento mov = new Movimiento(ficha.getColor(), ficha.getId(), ficha.getPosicionActual(), nombreSiguiente, ficha.isEnPasillo());
             if (conexion != null) conexion.enviarMensaje(mov.toFormatoString());
@@ -218,7 +209,6 @@ public class ControladorPartida {
 
     //Método para recibir ordenes de otro jugador
     private void procesarMensajeRed(String mensaje){
-        System.out.println("Juego recibio: "+ mensaje);
         javafx.application.Platform.runLater(() ->{
             //permite mover ficha segun color y su id
             if (mensaje.startsWith("Mover:")) {
@@ -231,7 +221,6 @@ public class ControladorPartida {
                 try {
                     int valor = Integer.parseInt(mensaje.split(":")[1]);
                     actualizarImgDado(valor);
-                    System.out.println("El rival saco un: " + valor);
                 } catch (Exception e) {
                     System.out.println("Error al procesar dado remoto");
                 }
@@ -242,7 +231,6 @@ public class ControladorPartida {
                     motorJuego.setTurno(nombreSiguiente);
                     //actualiza visualmente
                     actualizarInfoTurno();
-                    System.out.println("Sincronizando turno. Ahora le toca a: " + nombreSiguiente);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -258,7 +246,6 @@ public class ControladorPartida {
         VistaFicha vista = gestorFicha.buscarFichaVisual(colorMov, idFichaMov);
         if (vista != null) {
             Ficha modelo = vista.getFichaModelo();
-            System.out.println("Moviendo ficha remota: " + colorMov + " " + idFichaMov + " a " + destinoMov);
                 //Se encontro la ficha, lo mueve
                 modelo.setPosicionActual(destinoMov);
                 modelo.setEnCasa(false);
@@ -277,7 +264,6 @@ public class ControladorPartida {
                 String quienSigue = mov.getSiguienteJugador();
                 motorJuego.setTurno(quienSigue);
                 actualizarInfoTurno();
-                System.out.println("Sincronizando turno. Ahora le toca a: " + quienSigue);
         }
     }
 
@@ -298,6 +284,7 @@ public class ControladorPartida {
         btnTirarDado.setDisable(true);
         panelFichas.setMouseTransparent(true);
     }
+
     //Método para buscar jugador por color
     private Jugador buscarJugadorColor(Color c){
         for (Jugador j : jugadores) {

@@ -26,7 +26,6 @@ public class ClienteHandler extends Thread {
             entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String mensaje;
             while ((mensaje = entrada.readLine()) != null) {
-                System.out.println("Host recibió: " + mensaje);
                 padre.procesarMensajeDesdeCliente(mensaje, this);
             }
         } catch (IOException e) {

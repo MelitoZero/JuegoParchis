@@ -38,7 +38,6 @@ public class MotorJuego {
         for (int i = 0; i < jugadores.size(); i++) {
             if (jugadores.get(i).getNombre().equals(nombreJugador)) {
                 this.indiceTurnoActual = i;
-                System.out.println("DEBUG: Turno forzado a " + nombreJugador);
                 return;
             }
         }
@@ -107,7 +106,7 @@ public class MotorJuego {
         if (nueva > 68) {
             nueva -= 68;
         }
-        //Verificar si la casilla es segura
+        //Verifica si la casilla es segura
         Casilla casillaDestino = tablero.getCasilla(nueva);
         //Intentamos comer si no es segura la casilla o no es pasillo/meta
         if (casillaDestino != null && !casillaDestino.esSeguro()){

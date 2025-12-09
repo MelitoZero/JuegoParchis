@@ -20,7 +20,7 @@ public class ConexionP2P {
     private List<ClienteHandler> clientes = new CopyOnWriteArrayList<>();
     private boolean soyHost;
     private Consumer<String> listenerUI;
-    private static final int PUERTO = 4770; //Asignación de puerto para la conexión P2P
+    private static final int PUERTO = 4770; //Asignación de puerto para la conexión P2P se tiene que añadir regla de firewall
 
     //Método que inicia el servidor para servidor
     public void iniciarServidor(Consumer<String> listener) {
@@ -60,7 +60,7 @@ public class ConexionP2P {
                 System.out.println("Conectando al Host: " + ip + "...");
                 socketCliente = new Socket(ip, PUERTO);
                 System.out.println("Conexión exitosa");
-                // Configurar flujos (Solo necesito uno porque soy cliente)
+                // Configurar flujos
                 salidaCliente = new PrintWriter(socketCliente.getOutputStream(), true);
                 entradaCliente = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
                 escucharHost();
@@ -81,7 +81,6 @@ public class ConexionP2P {
     }
     //Método de envio de mensajes
     public void enviarMensaje(String mensaje) {
-        System.out.println("Enviando:" + mensaje);//Depuracion
         if (soyHost) {
             //Envia mensaje a todos los conectados
             broadcast(mensaje);
