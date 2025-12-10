@@ -36,8 +36,12 @@ public class ControladorSalaEspera {
         //Arranca el tablero
         new Thread(() ->{
            try { Thread.sleep(500); } catch (Exception e) {}
-            conexion.enviarMensaje("IniciarPartida");
-            Platform.runLater(this::irAlTablero); // El Host también va 
+           //Prueba de elegir turno del jugador que inicia  
+            int jugadores = jugadoresConectados.size();
+            int jugadorElegido = (int) (Math.random() * jugadores);
+            String jugadorPrincipal = jugadoresConectados.get(jugadorElegido).getNombre();
+            conexion.enviarMensaje("IniciarPartida:" + jugadorPrincipal);
+            Platform.runLater(()-> irAlTablero(jugadorPrincipal)); // El Host también recibe el mensaje
         }).start();
     }
 
@@ -48,7 +52,7 @@ public class ControladorSalaEspera {
         this.yo = new Jugador(nombre, avatar, color);
         this.jugadoresConectados.add(yo);
         this.conexion = new ConexionP2P();
-        if(conexion == null) System.out.println("ERROR FATAL: La conexión llegó NULL");
+        if(conexion == null) System.out.println("Error: La conexión llegó nula");
         else System.out.println("Conexión recibida correctamente");
         //Mostrar mi nombre en la lista de jugadores
         actualizarListaVisual();
@@ -89,17 +93,26 @@ public class ControladorSalaEspera {
             if (soyHost) {
                 String[] partes = mensaje.split(":");
                 String nombre = partes[1];
-                Color color = Color.valueOf(partes[2]);
-                //Valida si ya existe
+                Color colorSeleccionado = Color.valueOf(partes[2]);
+                //Valida si ya existe el nombre
                 boolean yaExiste = jugadoresConectados.stream().anyMatch(j -> j.getNombre().equals(nombre));
                 if (!yaExiste) {
-                    //Agrega el jugador a la lista
-                    jugadoresConectados.add(new Jugador(nombre, "avatar", color));
-                    //Actualiza la lista visual
-                    actualizarListaVisual();
-                    Platform.runLater(() -> btnIniciar.setDisable(false));
-                    //Envia la lista actualizada a todos
-                    enviarListaActualizada();
+                    Color colorFinal = colorSeleccionado;
+                    //Validacion de color
+                    if (esColorOcupado(colorSeleccionado)) {
+                        colorFinal = buscarColorDisponible();
+                    }
+                    //Se agrega al jugador el color disponible
+                    if (colorFinal != null) {
+                        //Agrega el jugador a la lista
+                        Jugador nuevo = new Jugador(nombre, "avatar", colorFinal);
+                        jugadoresConectados.add(nuevo);
+                        //Actualiza la lista visual
+                        actualizarListaVisual();
+                        Platform.runLater(() -> btnIniciar.setDisable(false));
+                        //Envia la lista actualizada a todos
+                        enviarListaActualizada();
+                    }
                 }
             }
         }else if (mensaje.startsWith("Lista:")){
@@ -116,7 +129,8 @@ public class ControladorSalaEspera {
                         Color color = Color.valueOf(partes[1]);
                         // Reconstruimos el objeto Jugador
                         if (nombre.equals(miNombre)) {
-                            jugadoresConectados.add(yo);
+                            this.yo = new Jugador(nombre, "avatar", color);
+                            jugadoresConectados.add(this.yo);
                         } else {
                             jugadoresConectados.add(new Jugador(nombre, "avatar", color));
                         }
@@ -124,13 +138,22 @@ public class ControladorSalaEspera {
                 }
                 actualizarListaVisual();                
             }
-        }else if (mensaje.equals("IniciarPartida")) { //En caso de que el host inicia la partida
-            Platform.runLater(this::irAlTablero);
+        }else if (mensaje.startsWith("IniciarPartida")) { //En caso de que el host inicia la partida
+            String nombreInicio = "";
+            if (mensaje.contains(":")){
+                nombreInicio = mensaje.split(":")[1];
+            }else {
+                if (!jugadoresConectados.isEmpty()) {
+                    nombreInicio = jugadoresConectados.get(0).getNombre();
+                }
+            }
+            final String jugadorElegido = nombreInicio;
+            Platform.runLater(() -> irAlTablero(jugadorElegido));
         }
     }
 
     //Método para ir a la pantalla del tablero
-    private void irAlTablero() {
+    private void irAlTablero(String jugadorElegido) {
         try {
             //Cambiar a la pantalla del tablero
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/View/VistaTablero.fxml"));
@@ -146,10 +169,11 @@ public class ControladorSalaEspera {
                 }
             }
             //Inicializar los datos de la partida en el controlador
-            controlador.initData(jugadoresConectados, conexion, nuevoYo);
+            controlador.initData(jugadoresConectados, conexion, nuevoYo, jugadorElegido);
             javafx.stage.Stage stage = (javafx.stage.Stage) vboxJugadores.getScene().getWindow();
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,5 +205,24 @@ public class ControladorSalaEspera {
             sb.append(j.getNombre()).append(":").append(j.getColor()).append(",");
         }
         conexion.enviarMensaje(sb.toString());
+    }
+
+    //Método para verificar si un color esta ocupado
+    private boolean esColorOcupado(Color c) {
+        for (Jugador j : jugadoresConectados) {
+            if (j.getColor() == c) return true;
+        }
+        return false;
+    }
+
+    //Método para buscar un color disponible
+    private Color buscarColorDisponible() {
+        for (Color c : Color.values()) {
+            if (c == Color.BLANCO) continue;
+            if (!esColorOcupado(c)) {
+                return c;
+            }
+        }
+        return null;
     }
 }

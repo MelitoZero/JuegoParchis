@@ -26,6 +26,7 @@ public class NavegacionPantallas {
             stage.setTitle(tituloVentana);
             stage.setResizable(false);
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException e) {
             //Maneja los errores y muestra mensajes en la consola
             System.out.println("Error al iniciar la Ventana del juego:");
@@ -53,6 +54,7 @@ public class NavegacionPantallas {
             stageActual.setScene(nuevaEscena);
             //Muestra la nueva escena
             stageActual.show();
+            stageActual.centerOnScreen();
         } catch (IOException e) {
             //Maneja los errores y muestra mensajes en la consola
             System.out.println("Error al cargar la vista del juego:");
@@ -68,6 +70,7 @@ public class NavegacionPantallas {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
+            stage.centerOnScreen();
             return loader.getController();
         } catch (Exception e) {
             e.printStackTrace();
