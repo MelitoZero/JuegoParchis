@@ -19,6 +19,8 @@ public class Jugador implements Serializable {
       this.fichas = new Ficha[4];
       for (int i = 0; i < 4; i++) {
          this.fichas[i] = new Ficha(i, color);
+         this.fichas[i].setEnCasa(true); 
+         this.fichas[i].setPosicionActual(-1);
       }
    }
    

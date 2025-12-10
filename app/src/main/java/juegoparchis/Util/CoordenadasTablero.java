@@ -22,14 +22,14 @@ public class CoordenadasTablero {
 
     private static void cargarCoordenadas() {
         // Aquí se inicializarán las coordenadas para el recorrido y los pasillos
-        recorrido.put(1, new Point2D(542.0, 878.0));
-        recorrido.put(2, new Point2D(542.0, 833.0));
-        recorrido.put(3, new Point2D(542.0, 788.0));
-        recorrido.put(4, new Point2D(542.0, 743.0));
-        recorrido.put(5, new Point2D(542.0, 698.0));
-        recorrido.put(6, new Point2D(542.0, 653.0));
-        recorrido.put(7, new Point2D(542.0, 608.0));
-        recorrido.put(8, new Point2D(540.0, 563.0));
+        recorrido.put(1, new Point2D(535.0, 883.0));
+        recorrido.put(2, new Point2D(535.0, 838.0));
+        recorrido.put(3, new Point2D(535.0, 793.0));
+        recorrido.put(4, new Point2D(535.0, 748.0));
+        recorrido.put(5, new Point2D(535.0, 702.0));
+        recorrido.put(6, new Point2D(535.0, 658.0));
+        recorrido.put(7, new Point2D(535.0, 613.0));
+        recorrido.put(8, new Point2D(532.0, 568.0));
         recorrido.put(9, new Point2D(563.0, 532.0));
         recorrido.put(10, new Point2D(611.0, 543.0));
         recorrido.put(11, new Point2D(656.0, 543.0));
@@ -43,7 +43,7 @@ public class CoordenadasTablero {
         recorrido.put(19, new Point2D(836.0, 353.0));
         recorrido.put(20, new Point2D(791.0, 353.0));
         recorrido.put(21, new Point2D(746.0, 353.0));
-        recorrido.put(22, new Point2D(701.0, 353.0));
+        recorrido.put(22, new Point2D(705.0, 353.0));
         recorrido.put(23, new Point2D(656.0, 353.0));
         recorrido.put(24, new Point2D(611.0, 353.0));
         recorrido.put(25, new Point2D(563.0, 362.0));
@@ -54,19 +54,19 @@ public class CoordenadasTablero {
         recorrido.put(30, new Point2D(542.0, 153.0));
         recorrido.put(31, new Point2D(542.0, 108.0));
         recorrido.put(32, new Point2D(542.0, 63.0));
-        recorrido.put(33, new Point2D(542.0, 18.0));
-        recorrido.put(34, new Point2D(452.0, 18.0));
-        recorrido.put(35, new Point2D(362.0, 18.0));
-        recorrido.put(36, new Point2D(362.0, 63.0));
-        recorrido.put(37, new Point2D(362.0, 108.0));
-        recorrido.put(38, new Point2D(362.0, 153.0));
-        recorrido.put(39, new Point2D(362.0, 198.0));
-        recorrido.put(40, new Point2D(362.0, 243.0));
-        recorrido.put(41, new Point2D(362.0, 288.0));
-        recorrido.put(42, new Point2D(370.0, 342.0));
+        recorrido.put(33, new Point2D(542.0, 15.0));
+        recorrido.put(34, new Point2D(452.0, 15.0));
+        recorrido.put(35, new Point2D(362.0, 15.0));
+        recorrido.put(36, new Point2D(362.0, 58.0));
+        recorrido.put(37, new Point2D(362.0, 102.0));
+        recorrido.put(38, new Point2D(362.0, 150.0));
+        recorrido.put(39, new Point2D(362.0, 190.0));
+        recorrido.put(40, new Point2D(362.0, 238.0));
+        recorrido.put(41, new Point2D(362.0, 276.0));
+        recorrido.put(42, new Point2D(370.0, 330.0));
         recorrido.put(43, new Point2D(333.0, 362.0));
-        recorrido.put(44, new Point2D(291.0, 353.0));
-        recorrido.put(45, new Point2D(246.0, 353.0));
+        recorrido.put(44, new Point2D(295.0, 353.0));
+        recorrido.put(45, new Point2D(252.0, 353.0));
         recorrido.put(46, new Point2D(201.0, 353.0));
         recorrido.put(47, new Point2D(156.0, 353.0));
         recorrido.put(48, new Point2D(111.0, 353.0));

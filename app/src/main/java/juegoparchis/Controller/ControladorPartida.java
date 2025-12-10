@@ -41,23 +41,18 @@ public class ControladorPartida {
 
     @FXML //Método que inicializa el controlador
     public void initialize() {
-        // Aquí puedes agregar cualquier inicialización necesaria para el controlador
-        /*imgTablero.setOnMouseClicked(event ->{
-            double x = event.getX();
-            double y = event.getY();
-            System.out.println("recorrido.put(NUMERO, new Point2D(" + x + ", " + y + "));");    
-        });*/
         dadoModelo = new Dado();
         actualizarImgDado(dadoModelo.getValor());
     }
 
     //Método para inicializar los datos de la partida
-    public void initData(List<Jugador> jugadores, ConexionP2P conexion, Jugador yo) {
+    public void initData(List<Jugador> jugadores, ConexionP2P conexion, Jugador yo, String jugadorElegido) {
         this.jugadores = jugadores;
         this.conexion = conexion;
         this.miJugador = yo;
         this.gestorFicha = new GestorFicha(panelFichas);
         this.motorJuego = new MotorJuego(jugadores); //Inicializar el motor de juego
+        this.motorJuego.setTurno(jugadorElegido);
         //Mostrar el turno del jugador
         actualizarInfoTurno();
         //Mostrar las fichas de los jugadores en el tablero
